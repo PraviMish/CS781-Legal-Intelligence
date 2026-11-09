@@ -1,0 +1,21 @@
+{
+  "experiment_id": "P4_E01_GQA_FullFT_Tail1024",
+  "model": "efficient_gqa",
+  "adaptation": "full_finetuning",
+  "representation": "tail",
+  "strategy_index": 0,
+  "sequence_length": 1024,
+  "micro_batch_size": 8,
+  "gradient_accumulation": 4,
+  "max_epochs": 3,
+  "backbone_lr": 2e-05,
+  "head_lr": 0.0003,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.06,
+  "gradient_clip": 1.0,
+  "early_stopping_patience": 2,
+  "checkpoint_every_steps": 400,
+  "seed": 42,
+  "train_cases": 29074,
+  "validation_cases": 3231
+}

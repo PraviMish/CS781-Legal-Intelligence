@@ -1,0 +1,22 @@
+{
+  "experiment": "P4_E07_GQA_AdaptiveRank_r16to8",
+  "adaptation": "adaptive_rank_svd_style",
+  "backbone": "efficient_gqa_700M",
+  "start_rank": 16,
+  "target_rank": 8,
+  "minimum_rank": 2,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "out_proj"
+  ],
+  "micro_batch": 8,
+  "accumulation": 4,
+  "epochs": 3,
+  "patience": 2,
+  "adapter_lr": 0.0003,
+  "head_lr": 0.0003,
+  "weight_decay": 0.01,
+  "seed": 749
+}

@@ -16,7 +16,7 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-The research release covers Phases 1--3. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
+The research release covers Phases 1--4. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
 
 ## Phase-1 finding
 
@@ -39,10 +39,19 @@ The separate best-model-only source code is distributed apart from the public
 all-experiment research repository.
 
 
+## Phase-4 finding
+
+Efficient GQA full fine-tuning (E01) achieved **0.7393** official macro-F1 on
+binary court judgment prediction, ahead of the distilled-student blend
+(0.7369) and Prefix-LM blend (0.7353). E09 led on clean development.
+[Phase-4 experiments and reproduction](code/phase4/README.md)
+
 ## Contents
 
 - `code/phase1/`: four original architectures, tokenizer/data preparation, training, evaluation, generation, official submission packaging, configuration, and experimental records
 - `code/phase2/`: exact-span legal NER, frozen and fully tuned models, LoRA and LoRMA+ adapters, knowledge distillation, voting, and official submission packaging
+- `code/phase3/`: rhetorical roles, context packing, adaptation, distillation, and structured decoding
+- `code/phase4/`: court judgment prediction, eight trained runs, two blends, and saved-output replay
 - `code/common/`: shared atomic checkpointing, artifact and RNG helpers
 - `code/tests/`: software smoke tests
 - `code/requirements.txt`: Python dependencies
@@ -72,6 +81,6 @@ The comprehensive report is maintained from one `report/main.tex` entry point. T
 
 ## Reproducibility status
 
-The Phase-2 audit replayed both ensemble prediction dictionaries exactly from the archived member outputs and reproduced the held-out split and token cache. See the per-phase verification records for completed checks and remaining checkpoint replay work. [Phase status](docs/PHASE_STATUS.md)
+The Phase-2 audit replayed both ensemble prediction dictionaries exactly from the archived member outputs and reproduced the held-out split and token cache. Phase 4 reproduced all ten archived submissions from saved outputs. See the per-phase verification records for completed checks and remaining checkpoint replay work. [Phase status](docs/PHASE_STATUS.md)
 
 **Winner checkpoint guard:** do not use the current generic `efficient_gqa/best.pt` after continued pretraining; the initial winning weights were frozen under `efficient_gqa/milestones/best_100M.pt`. See Phase-1 instructions.

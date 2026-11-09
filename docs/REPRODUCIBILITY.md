@@ -37,3 +37,15 @@ the target sentence, not a bidirectional-attention model. See
 resume, evaluate and generate one label per original test sentence.
 The original large checkpoints cannot be published or independently strict-
 loaded in this source-only release; full prediction equivalence is pending.
+
+## Phase 4 court judgment prediction
+
+Use the official `Phase_4_CJPE` files at the pinned revision recorded in the
+[Phase-4 README](../code/phase4/README.md). Preserve the Phase 1 tokenizer,
+case-level split order, and the exact snapshot for each adaptation. The
+research CLI covers preparation, eight training variants, threshold selection,
+E09/E10 probability blending, and submission validation. The artifact replay
+checks all ten saved ZIPs against the official test IDs without model weights.
+The separate source-only E01 inference package requires the original Phase 4
+classifier and uses its fixed 0.51 threshold. See the phase README for commands
+and the original-weight verification limits.

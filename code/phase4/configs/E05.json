@@ -1,0 +1,22 @@
+{
+  "experiment": "P4_E05_PrefixLM_FullFT_Tail1024",
+  "architecture": "prefix_lm",
+  "adaptation": "full_finetuning",
+  "attention": "bidirectional_prefix_padding_masked",
+  "pretraining_tokens": 100024320,
+  "representation": "tail",
+  "sequence_length": 1024,
+  "micro_batch_size": 8,
+  "gradient_accumulation": 4,
+  "max_epochs": 3,
+  "patience": 2,
+  "backbone_lr": 2e-05,
+  "head_lr": 0.0003,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.06,
+  "gradient_clip": 1.0,
+  "checkpoint_every_updates": 400,
+  "seed": 547,
+  "train_cases": 29074,
+  "val_cases": 3231
+}

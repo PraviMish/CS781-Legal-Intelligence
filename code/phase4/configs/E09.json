@@ -1,0 +1,18 @@
+{
+  "experiment": "P4_E09_GQA_PrefixLM_Ensemble",
+  "teacher": "E01",
+  "member": "E05",
+  "weight_grid": [
+    0.55,
+    0.95,
+    9
+  ],
+  "threshold_grid": [
+    0.25,
+    0.75,
+    51
+  ],
+  "selected_teacher_weight": 0.9,
+  "selected_threshold": 0.48,
+  "selection": "maximize internal macro-F1, retaining the first maximum"
+}

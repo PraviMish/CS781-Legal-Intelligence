@@ -1,0 +1,12 @@
+{
+  "experiment": "P4_E02_GQA_Hierarchical5",
+  "source": "P4_E01_GQA_FullFT_Tail1024",
+  "num_chunks": 5,
+  "hidden_dim": 768,
+  "batch_size": 256,
+  "learning_rate": 0.0002,
+  "weight_decay": 0.01,
+  "max_epochs": 20,
+  "patience": 5,
+  "seed": 244
+}

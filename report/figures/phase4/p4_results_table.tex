@@ -1,0 +1,16 @@
+\begin{tabular}{llrrrr}
+\toprule
+Run & Experiment & Threshold & Internal & Clean dev & Codabench \\
+\midrule
+E01 & Efficient GQA full tuning & 0.51 & 0.7795 & 0.7328 & \textbf{0.7393} \\
+E02 & Hierarchical GQA & 0.45 & 0.7809 & 0.7233 & 0.7263 \\
+E03 & GQA LoRMA+ & 0.49 & 0.7548 & 0.6576 & 0.6749 \\
+E04 & Decoder-only full tuning & 0.50 & 0.7423 & 0.6911 & 0.6976 \\
+E05 & Prefix-LM full tuning & 0.49 & 0.6769 & 0.6445 & 0.6476 \\
+E06 & Encoder--decoder full tuning & 0.46 & 0.6480 & 0.6133 & 0.6013 \\
+E07 & Adaptive-rank GQA & 0.44 & 0.7150 & 0.6394 & 0.6580 \\
+E08 & Distilled Transformer & 0.47 & 0.6643 & 0.6015 & 0.6126 \\
+E09 & GQA + Prefix-LM & 0.48 & 0.7797 & 0.7346 & 0.7353 \\
+E10 & GQA + distilled student & 0.49 & 0.7797 & 0.7329 & 0.7369 \\
+\bottomrule
+\end{tabular}

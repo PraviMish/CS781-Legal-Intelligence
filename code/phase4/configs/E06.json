@@ -1,0 +1,21 @@
+{
+  "experiment": "P4_E06_EncoderDecoder_FullFT_Tail1024",
+  "architecture": "encoder_decoder",
+  "adaptation": "full_finetuning",
+  "pretraining_tokens": 100024320,
+  "representation": "tail",
+  "sequence_length": 1024,
+  "micro_batch_size": 8,
+  "gradient_accumulation": 4,
+  "max_epochs": 3,
+  "patience": 2,
+  "backbone_lr": 2e-05,
+  "head_lr": 0.0003,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.06,
+  "gradient_clip": 1.0,
+  "checkpoint_every_updates": 400,
+  "seed": 648,
+  "train_cases": 29074,
+  "val_cases": 3231
+}

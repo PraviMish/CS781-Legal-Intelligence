@@ -35,7 +35,7 @@
 The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
 
 ## Future phases
-Phases 4--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
+Phases 5--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
 
 ## Original artifacts required for replay
 
@@ -56,3 +56,16 @@ Checkpoint weights, token caches, evaluation examples and archived predictions a
 
 See [Phase-3 evidence audit](PHASE3_EVIDENCE_AUDIT.md) and
 [verification notes](PHASE3_VERIFICATION.md).
+
+## Phase 4 research release
+
+- [x] Verify the executed notebook, saved run artifacts, and official scores supplied by the user
+- [x] Port eight trained variants and two blends with original configurations and checkpoint schemas
+- [x] Validate all ten archived ZIPs against 1,517 official test IDs and replay all ten label sets
+- [x] Recover both ensemble selections and recompute local aggregate metrics
+- [x] Load the original E02, E03, E07 and E08 checkpoint components and run available inference checks
+- [x] Generate three figure pairs and the results table, then compile the existing master report
+- [x] Prepare a separate source-only E01 inference package
+- [ ] Replay E01/E04/E05/E06 from original weights and rerun original GPU training
+
+[Phase-4 methods, records and verification](../code/phase4/README.md)

@@ -1,0 +1,29 @@
+{
+  "experiment": "P4_E03_GQA_LoRMAPlus_r16",
+  "architecture": "efficient_gqa",
+  "phase1_tokens": 700047360,
+  "adaptation": "LoRMA_plus_multiplicative",
+  "rank": 16,
+  "alpha": 32,
+  "targets": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "out_proj",
+    "gate",
+    "up",
+    "down"
+  ],
+  "sequence_length": 1024,
+  "representation": "tail",
+  "micro_batch_size": 8,
+  "gradient_accumulation": 4,
+  "max_epochs": 4,
+  "patience": 2,
+  "adapter_lr": 0.0003,
+  "head_lr": 0.0005,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.06,
+  "checkpoint_every_updates": 250,
+  "seed": 345
+}

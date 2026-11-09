@@ -3,6 +3,8 @@
 torch>=2.4,<3.0
 numpy>=1.26,<3.0
 pandas>=2.0,<3.0
+scikit-learn>=1.6,<2.0
+pyarrow>=16.0,<30.0
 matplotlib>=3.8,<4.0
 tokenizers>=0.19,<1.0
 ijson>=3.2,<5.0

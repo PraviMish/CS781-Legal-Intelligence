@@ -1,0 +1,22 @@
+{
+  "experiment": "P4_E08_GQA_KD_Student384x6",
+  "method": "supervised_knowledge_distillation",
+  "teacher": "P4_E01_GQA_FullFT_Tail1024",
+  "teacher_hash": "6bf68d23884879b24a9e5dcf5c821df7e096da437d14eecb5d0cdf745a16e795",
+  "student_layers": 6,
+  "student_hidden_dim": 384,
+  "student_heads": 6,
+  "student_parameters": 23329538,
+  "sequence_length": 1024,
+  "temperature": 2.0,
+  "kd_weight": 0.65,
+  "micro_batch": 16,
+  "accumulation": 2,
+  "max_epochs": 5,
+  "patience": 2,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.01,
+  "warmup_fraction": 0.05,
+  "checkpoint_every_updates": 350,
+  "seed": 850
+}

@@ -44,3 +44,11 @@ with rank-8 LoRA achieved the best recorded official Macro-F1, **0.4249**
 Phase-3 datasets contain 80 train, 10 dev and 10 hidden-test judgments.
 Recorded official results include failed and still-preparing entries; the
 exact source of record is [the Phase-3 README](../code/phase3/README.md).
+
+## Phase-4 established result
+
+E01 full fine-tuning of the 700,047,360-token Efficient GQA foundation won
+the ten recorded Codabench results at **0.7393 macro-F1**. The selected
+checkpoint is epoch 2, with a 0.51 threshold on class-1 probability.
+Clean-development selection and official ranking differ. All ten label
+sets were replayed from archived outputs. [Phase-4 README](../code/phase4/README.md)

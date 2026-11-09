@@ -1,0 +1,123 @@
+{
+  "phase": 4,
+  "task": "Court Judgment Prediction",
+  "dataset": "Exploration-Lab/CS-781-Capstone",
+  "repository_revision": "93b0059be756c6c461f3a225de25aabda7d5f84a",
+  "seed": 42,
+  "dataset_sizes": {
+    "train": 37387,
+    "dev": 1988,
+    "test": 1517
+  },
+  "class_distribution": [
+    {
+      "Split": "train",
+      "Class": 0,
+      "Count": 22067,
+      "Percentage": 59.02
+    },
+    {
+      "Split": "train",
+      "Class": 1,
+      "Count": 15320,
+      "Percentage": 40.98
+    },
+    {
+      "Split": "dev",
+      "Class": 0,
+      "Count": 994,
+      "Percentage": 50.0
+    },
+    {
+      "Split": "dev",
+      "Class": 1,
+      "Count": 994,
+      "Percentage": 50.0
+    }
+  ],
+  "document_lengths": [
+    {
+      "Split": "train",
+      "Cases": 37387,
+      "Mean words": 3277,
+      "Median words": 2192,
+      "P90 words": 6575,
+      "P95 words": 9195,
+      "P99 words": 19403,
+      "Maximum words": 412606
+    },
+    {
+      "Split": "dev",
+      "Cases": 1988,
+      "Mean words": 3752,
+      "Median words": 2822,
+      "P90 words": 6933,
+      "P95 words": 9280,
+      "P99 words": 19912,
+      "Maximum words": 42198
+    },
+    {
+      "Split": "test",
+      "Cases": 1517,
+      "Mean words": 3850,
+      "Median words": 2940,
+      "P90 words": 7302,
+      "P95 words": 10023,
+      "P99 words": 18236,
+      "Maximum words": 40487
+    }
+  ],
+  "split_overlaps": [
+    {
+      "Split A": "train",
+      "Split B": "dev",
+      "Shared IDs": 0,
+      "Shared exact documents": 0
+    },
+    {
+      "Split A": "train",
+      "Split B": "test",
+      "Shared IDs": 0,
+      "Shared exact documents": 0
+    },
+    {
+      "Split A": "dev",
+      "Split B": "test",
+      "Shared IDs": 0,
+      "Shared exact documents": 0
+    }
+  ],
+  "conflicting_training_labels": 0,
+  "baseline_macro_f1": [
+    {
+      "Predict class": 0,
+      "Accuracy": 0.5,
+      "Macro-F1": 0.3333333333333333
+    },
+    {
+      "Predict class": 1,
+      "Accuracy": 0.5,
+      "Macro-F1": 0.3333333333333333
+    },
+    {
+      "Predict class": 0,
+      "Accuracy": 0.5,
+      "Macro-F1": 0.3333333333333333
+    }
+  ],
+  "case_level": {
+    "train": 32305,
+    "dev_safe": 994,
+    "test": 1517,
+    "quarantined_dev_rows": 0,
+    "class_1_train": 13385,
+    "class_1_dev_safe": 497,
+    "train_core": 29074,
+    "val_internal": 3231
+  },
+  "official_files": {
+    "train": "Phase_4_CJPE/Train/train.json",
+    "dev": "Phase_4_CJPE/Train/dev.json",
+    "test": "Phase_4_CJPE/Test/test.json"
+  }
+}
