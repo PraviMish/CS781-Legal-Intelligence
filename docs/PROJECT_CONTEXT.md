@@ -67,3 +67,11 @@ V3 Efficient GQA + LoRA (E05) leads seven official submissions with BERTScore F1
 **0.8459** (1026556). The submitted checkpoint is update 7,750 with raw
 hierarchical decoding. E07 leads local ROUGE on 96 held-out documents.
 [Phase 6 methods and records](../code/phase6/README.md)
+
+## Phase 7 research findings
+The final Phase 7 prior-case retrieval winner was E10, full-document TF-IDF
+plus legal citation features and an all-positive-pairs LightGBM LambdaRank
+model, combined with 60%/40% reciprocal-rank fusion. Official Micro-F1@7:
+0.4619 (Codabench 1039660). The original legal-GQA adaptation programme
+E00--E06 remains documented and reconstructable. See the dedicated Phase-7
+README and full report for methodological and prospective-citation limitations.

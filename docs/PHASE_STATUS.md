@@ -34,10 +34,6 @@
 
 The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
 
-## Future phases
-Phase 7 is planned after its executed notebook, Codabench score sheets
-and saved artifacts have been audited.
-
 ## Original artifacts required for replay
 
 Checkpoint weights, token caches, evaluation examples and archived predictions are kept outside the repository. The Phase-1 audit could locate the winning checkpoint but could not retrieve the approximately 451 MB file through the available Drive connection. Synthetic checkpoint round-trip tests cover the repository's own checkpoint writer and reader.
@@ -97,3 +93,21 @@ See [Phase-3 evidence audit](PHASE3_EVIDENCE_AUDIT.md) and
 The 463 MB original E05 checkpoint exceeds the connected Drive transfer
 limit. E05 remains the official winner at BERTScore F1 0.8459.
 [Evidence and verification](PHASE6_EVIDENCE.md)
+
+## Phase 7 research release
+- [x] Audit original executed notebook, V2 notebook, official dataset and logs
+- [x] Reconstruct E00--E10 experiment methods and eleven official submitted scores
+- [x] Identify 1039660 (E10) as the best official Micro-F1@7 (0.4619)
+- [x] Integrate portable Phase 7 source, tests, analysis and evidence records
+- [x] Add source-only E10 course package script and comprehensive Phase-7 LaTeX section
+- [x] Pass all seven Phase 7 tests, including official dataset and archived E10 ZIP checks
+- [ ] Verify full Phase-7 original-weight neural logits and saved prediction arrays
+- [ ] Complete full CPU V2 test-prediction replay under a compatible environment
+- [x] Run the repository regression suite (see checkout details below)
+- [x] Compile the 49-page master report with Tectonic and inspect the front matter and Phase 7 pages
+
+The workspace run passed 70 tests. The separate Phase 3 winner-package test
+failed because the local package directory lacked `model.py`. The same test
+skips in a clean repository checkout, where the separate package is absent.
+
+[Phase 7 evidence and verification](PHASE7_EVIDENCE.md)

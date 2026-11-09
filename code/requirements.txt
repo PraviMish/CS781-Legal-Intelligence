@@ -11,3 +11,10 @@ ijson>=3.2,<5.0
 rouge-score>=0.1.2,<1.0
 sacrebleu>=2.3,<3.0
 pytest>=8.0,<10.0
+
+# Phase 7 optional retrieval dependencies
+lightgbm>=4.2,<5.0
+scipy>=1.11,<2.0
+tqdm>=4.66,<5.0
+ipython>=8.0,<10.0
+huggingface_hub>=0.28,<2.0

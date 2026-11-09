@@ -1,0 +1,10 @@
+{
+  "provenance": "Official Exploration-Lab/CS-781-Capstone Phase_7_PCR JSON; verified 2026-11-09",
+  "train": {"queries": 827, "candidates": 4320, "gold_pairs": 5308, "labeled_queries": 817, "zero_positive_queries": 10, "query_median_words": 4508, "query_p95_words": 20655, "candidate_median_words": 3632, "candidate_p95_words": 19243, "self_case_in_candidate_pool": 827, "identical_self_text": 827},
+  "dev": {"queries": 118, "candidates": 1023, "gold_pairs": 973, "labeled_queries": 118, "query_median_words": 4619, "query_p95_words": 20452, "candidate_median_words": 4036, "candidate_p95_words": 26778, "self_case_in_candidate_pool": 118, "identical_self_text": 118},
+  "test": {"queries": 237, "candidates": 1727, "gold_pairs": null, "query_median_words": 4653, "query_p95_words": 19824, "candidate_median_words": 3947, "candidate_p95_words": 20894, "self_case_in_candidate_pool": 237},
+  "overlap": {"train_dev_candidate_ids": 436, "train_test_candidate_ids": 740, "dev_test_candidate_ids": 220, "query_id_overlap_between_splits": 0},
+  "citation_dev": {"incoming_true_positive_pairs": 105, "incoming_false_positive_pairs": 2, "direct_mention_true_positive_pairs": 44, "direct_mention_false_positive_pairs": 23},
+  "development_self_exclusion_diagnostic": {"tfidf_original_micro_f1": 0.386881600889383, "tfidf_excluding_query_micro_f1": 0.424680377987771, "citations_original_micro_f1": 0.424680377987771, "citations_excluding_query_micro_f1": 0.45247359644246804, "historical_winner_self_candidates_in_test_top7": 85},
+  "verified_evidence": ["Official JSON files", "executed Phase 7 notebook", "executed V2 notebook", "Drive FINAL_MANIFEST", "Codabench screenshots"]
+}

@@ -1,0 +1,12 @@
+experiment,method,submission_filename,codabench_id,dev_micro_f1_at7,official_micro_f1_at7,mapping_evidence
+E00_BM25,BM25,submission1.zip,1039201,0.1734296831573096,0.1949,provisional_original_notebook_order
+E01_PARTIAL,Partial fine-tuning,submission2.zip,1039202,0.21011673151750973,0.2144,provisional_original_notebook_order
+E02_IA3,IA3,submission3.zip,1039204,0.20344635908838243,0.2067,provisional_original_notebook_order
+E03_LORMA,LoRMA+,submission4.zip,1039205,0.21567537520844915,0.2239,provisional_original_notebook_order
+E04_FULL,Full fine-tuning,submission5.zip,1039207,0.2178988326848249,0.2268,provisional_original_notebook_order
+E05_KD,Knowledge distillation,submission6.zip,1039208,0.21011673151750973,0.2138,provisional_original_notebook_order
+E06_ENSEMBLE,BM25 / neural RRF,submission7.zip,1039209,0.21901056142301278,0.2209,provisional_original_notebook_order
+E07_TFIDF,Full-document TF-IDF,submission8.zip,1039636,0.386881600889383,0.3839,confirmed_v2_notebook_order
+E08_LEGAL_CITATIONS,TF-IDF plus citation boosts,submission9.zip,1039637,0.424680377987771,0.4265,confirmed_v2_notebook_order
+E09_LIGHTGBM,LambdaRank,submission10.zip,1039657,0.40689271817676487,0.4253,confirmed_v2_notebook_order
+E10_DEV_SELECTED_LEGAL_RANKER,Citation TF-IDF plus LambdaRank RRF,submission11.zip,1039660,0.44691495275152865,0.4619,confirmed_v2_notebook_order

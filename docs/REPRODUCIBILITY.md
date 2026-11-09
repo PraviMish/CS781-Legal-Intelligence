@@ -66,3 +66,19 @@ archived validation IDs. The Phase 6 CLI supports all three protocols. The
 separate E05 source package requires the archived V3 step 7,750 model and
 uses the raw hierarchical decoder. See the [Phase 6 README](../code/phase6/README.md)
 for commands and the [evidence audit](PHASE6_EVIDENCE.md) for replay limits.
+
+## Phase 7: Prior Case Retrieval
+See `code/phase7/README.md` and `docs/PHASE7_EVIDENCE.md` for full reconstruction,
+provenance, data statistics, experimental constraints and original-weight limitations.
+
+```
+PYTHONPATH=code python -m phase7.v2_pipeline --project-root '/path/to/LLM CAPSTONE'
+PYTHONPATH=code python -m pytest -q code/tests/test_phase7.py
+PYTHONPATH=code python -m phase7.analysis.figures --out report/figures/phase7
+python scripts/package_phase7_winner.py --output phase7_winner_source.zip
+```
+
+The V2 LambdaRank model, original Phase-1 700M weights and BPE tokenizer are
+external artifacts, not bundled in public source. The test ZIP is a derived
+output: it is not a substitute for reproducible case indexing, model training
+or ranking inference. The 118-query Dev set selects citation/RRF weights.

@@ -16,7 +16,7 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-The research release covers Phases 1–6.
+The research release covers Phases 1–7.
 
 ## Phase-1 finding
 
@@ -62,6 +62,7 @@ V3 Efficient GQA + LoRA (E05) achieved the best recorded official BERTScore F1, 
 - `code/phase4/`: court judgment prediction, eight trained runs, two blends, and saved-output replay
 - `code/phase5/`: six legal statute classifiers, grouped split, per-statute thresholds, and submission validation
 - `code/phase6/`: legal summarization across three revisions, seven official submissions, passage alignment, and two distillation objectives
+- `code/phase7/`: prior-case retrieval, neural adaptations, lexical ranking and the citation-aware LambdaRank fusion
 - `code/common/`: shared atomic checkpointing, artifact and RNG helpers
 - `code/tests/`: software smoke tests
 - `code/requirements.txt`: Python dependencies
@@ -94,3 +95,19 @@ The comprehensive report is maintained from one `report/main.tex` entry point. T
 The Phase-2 audit replayed both ensemble prediction dictionaries exactly from the archived member outputs and reproduced the held-out split and token cache. Phase 4 reproduced all ten archived submissions from saved outputs. See the per-phase verification records for completed checks and remaining checkpoint replay work. [Phase status](docs/PHASE_STATUS.md)
 
 **Winner checkpoint guard:** do not use the current generic `efficient_gqa/best.pt` after continued pretraining; the initial winning weights were frozen under `efficient_gqa/milestones/best_100M.pt`. See Phase-1 instructions.
+
+## Phase 7 research release
+
+[Phase 7 code and research README](code/phase7/README.md) |
+[Phase 7 scientific evidence audit](docs/PHASE7_EVIDENCE.md) |
+[Comprehensive Phase 7 LaTeX section](report/phase7.tex)
+
+The original Phase-1 Efficient GQA was adapted for prior-case retrieval using
+partial fine-tuning, IA³, LoRMA+, full fine-tuning and knowledge distillation.
+The first retrieval system was limited by a 256-case BM25 shortlist and
+truncated long documents. A subsequent full-document TF-IDF, legal citation
+feature and supervised LambdaRank pipeline produced the best **official**
+Phase-7 score: **0.4619 Micro-F1@7**, submission **1039660 (submission11.zip)**.
+The repository records all E00–E10 methods; only E10 belongs in the separate
+best-model-only source ZIP. Public source does not include private data,
+original 700M checkpoint weights or saved test predictions.
