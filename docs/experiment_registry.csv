@@ -1,8 +1,25 @@
-phase,variant,tokens_millions,decoder,official_primary_bertscore_f1,official_rouge_l_f1,official_bleu4,notes
-1,decoder_only,100,legacy_word_guard_v1,0.8346557,0.19630469,0.05258763,
-1,efficient_gqa,100,legacy_word_guard_v1,0.83479506,0.19745313,0.0538535,best official score
-1,efficient_gqa_300M,300,legacy_word_guard_v1,0.83080482,0.1718125,0.0325767,
-1,efficient_gqa_500M_tuned,500,greedy_full_prompt,0.78932995,0.14202344,0.00777384,
-1,efficient_gqa_700M_tuned,700,greedy_full_prompt,0.8099227,0.14757031,0.01275489,
-1,encoder_decoder,100,legacy_word_guard_v1,0.8256914,0.16444531,0.02212777,
-1,prefix_lm,100,legacy_word_guard_v1,0.82551551,0.16594531,0.0261829,
+phase,variant,tokens_millions,decoder,official_primary_bertscore_f1,official_rouge_l_f1,official_bleu4,notes,phase2_local_strict_macro_f1,phase2_codabench_strict_macro_f1,codabench_submission_id,evaluation_protocol,source,phase2_method
+1,decoder_only,100,legacy_word_guard_v1,0.8346557,0.19630469,0.05258763,,,,,,,
+1,efficient_gqa,100,legacy_word_guard_v1,0.83479506,0.19745313,0.0538535,best official score,,,,,,
+1,efficient_gqa_300M,300,legacy_word_guard_v1,0.83080482,0.1718125,0.0325767,,,,,,,
+1,efficient_gqa_500M_tuned,500,greedy_full_prompt,0.78932995,0.14202344,0.00777384,,,,,,,
+1,efficient_gqa_700M_tuned,700,greedy_full_prompt,0.8099227,0.14757031,0.01275489,,,,,,,
+1,encoder_decoder,100,legacy_word_guard_v1,0.8256914,0.16444531,0.02212777,,,,,,,
+1,prefix_lm,100,legacy_word_guard_v1,0.82551551,0.16594531,0.0261829,,,,,,,
+2,gqa_100m_frozen_probe,100,,,,,selected epoch score; archived re-evaluation 0.16752,0.167655977680907,,,56 train / 14 held out,Drive validation artifacts,linear_probe
+2,gqa_700m_full_bio_v1,700,,,,,,0.26676043715731906,0.2960,971886,56 train / 14 held out,Drive validation history + Codabench screenshot,full_fine_tuning
+2,decoder_100m_full_bio_v1,100,,,,,,0.2449464796817725,0.2849,971879,56 train / 14 held out,Drive validation history + Codabench screenshot,full_fine_tuning
+2,encoder_decoder_100m_lora_v1,100,,,,,,0.020861209788829684,,,56 train / 14 held out,Drive validation artifacts,lora
+2,encoder_decoder_100m_lora_balanced_v2,100,,,,,,0.04995466456305028,0.0459,971880,56 train / 14 held out,Drive validation history + Codabench screenshot,weighted_lora
+2,prefix_lm_100m_lorma_plus_v1,100,,,,,,0.0633437994067083,0.0651,971887,56 train / 14 held out,Drive validation history + Codabench screenshot,weighted_lorma_plus
+2,gqa_7layer_supervised,700,,,,,,0.24068031805351298,,,56 train / 14 held out,Drive validation artifacts,supervised_student
+2,gqa_7layer_distilled,700,,,,,,0.25122496366003594,0.2736,971885,56 train / 14 held out,Drive validation history + Codabench screenshot,distillation
+2,gqa_full70_v1,700,,,,,,,,,70 train / 0 held out,Drive experiment manifest,full_fine_tuning
+2,decoder_full70_v1,100,,,,,,,,,70 train / 0 held out,Drive experiment manifest,full_fine_tuning
+2,student_kd_full70_v1,700,,,,,,,,,70 train / 0 held out,Drive experiment manifest,distillation
+2,ensemble_v1_majority,,,,,,best held-out voting rule,0.3065774340128943,0.3342,971884,56 train / 14 held out,Drive validation history + Codabench screenshot,majority
+2,ensemble_v1_teacher_confirmed,,,,,,,0.30323270649971973,,,56 train / 14 held out,Drive validation artifacts,teacher_confirmed
+2,ensemble_v1_teacher_plus_agreement,,,,,,,0.2703102821385003,,,56 train / 14 held out,Drive validation artifacts,teacher_plus_agreement
+2,ensemble_v1_union,,,,,,,0.24391219603867595,,,56 train / 14 held out,Drive validation artifacts,union
+2,ensemble_v1_unanimous,,,,,,,0.22974744500168356,,,56 train / 14 held out,Drive validation artifacts,unanimous
+2,ensemble_full70_majority_v1,,,,,,best official Phase 2 score,,0.3577,971881,70 train / 0 held out,Codabench screenshot,majority

@@ -43,6 +43,14 @@ venv/
 **/submission.zip
 **/prediction.json
 **/partial_*.json
+*.ipynb
+*.json.gz
+**/fold[123]-text.json
+**/fold[12]-gold.json
+**/normalized_gold.json
+**/validation_split.json
+**/validation_predictions.json
+**/teacher_cache*/
 
 # LaTeX build outputs (retain the report's figure assets)
 /report/main.pdf

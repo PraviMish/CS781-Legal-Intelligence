@@ -18,3 +18,11 @@ Obtain files from `Exploration-Lab/CS-781-Capstone`, `Phase_1_Pretraining/Train/
 This reconstruction underwent syntax compilation and architecture-size checking. Exact checkpoint compatibility and prediction equivalence cannot be certified without loading original large checkpoints and archived outputs. Course hidden references cannot be evaluated locally. The official notebook contains a two-stage data-cache history and different decoder strategies; reproducibility requires keeping the correct combination of checkpoint and decoder per submitted variant.
 
 **Historical run inputs.** The training CLI defaults to seed 42 and accepts the original seed privately with `--seed`. Exact training replay also requires the original tokenizer, token caches, validation split and runtime settings. Sampling during inference derives its seed from the prompt, with a configuration name included for the later sweep. Identical sampling can also depend on the runtime and device.
+
+## Phase 2 legal named entity recognition
+
+Use the official dataset's `Phase_2_LNER/Train` and `Phase_2_LNER/Test` files. Pass the archived Phase-1 tokenizer and the original snapshot identified for each adaptation. The held-out runs use the archived `validation_split.json` and a checkpoint selected by strict validation macro-F1. The winning runs use all 70 labeled judgments, four fixed epochs, and the three corresponding `final.pt` files. See the commands and artifact mapping in the [Phase-2 README](../code/phase2/README.md).
+
+The Phase-2 CLI reads the archived prediction JSON or ZIP for CPU-only ensemble replay. Run `python -m phase2 --help` for the training, evaluation, inference, voting, and validation commands. Keep raw files, caches, and weights outside the checkout.
+
+Regenerate the three Phase-2 figures with `python code/phase2/analysis/figures.py` from the repository root. Compile `main.tex` from `report/` with Tectonic, or with two `pdflatex` passes.

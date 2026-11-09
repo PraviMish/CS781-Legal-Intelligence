@@ -16,20 +16,25 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-**Current code-release scope:** The reconstructed Phase-1 package and master report's Phase-1 chapter. Later phases will be added as validated, using the same conventions.
+The research release covers Phases 1 and 2. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
 
 ## Phase-1 finding
 
 Four architecturally distinct models were built from scratch with a new 32,000-token byte-level BPE tokenizer trained exclusively on official legal text. Of the seven valid Phase-1 Codabench submissions, **Efficient GQA at ~100M consumed tokens** achieved the best official BERTScore F1, **0.83479506**. Further training through 300M, 500M and 700M tokens lowered held-out language-model loss but did not improve hidden-reference continuation score. See [Phase-1 README](code/phase1/README.md) and [comprehensive report source](report/main.tex).
 
+## Phase-2 finding
+
+The full-data majority ensemble achieved **0.3577** strict macro-F1 on Codabench (submission **971881**), compared with **0.3342** for the original majority ensemble. It votes over exact character spans predicted by GQA, a decoder-only model, and a distilled GQA student. The local study includes a frozen probe, full fine-tuning, LoRA and LoRMA+, a supervised student control, and five voting rules. [Phase-2 README](code/phase2/README.md)
+
 ## Contents
 
 - `code/phase1/`: four original architectures, tokenizer/data preparation, training, evaluation, generation, official submission packaging, configuration, and experimental records
+- `code/phase2/`: exact-span legal NER, frozen and fully tuned models, LoRA and LoRMA+ adapters, knowledge distillation, voting, and official submission packaging
 - `code/common/`: shared atomic checkpointing, artifact and RNG helpers
 - `code/tests/`: software smoke tests
 - `code/requirements.txt`: Python dependencies
 - `report/main.tex`: continuously extended LaTeX research report
-- `report/figures/phase1/`: original vector figures plus PNG previews generated from experimental CSV data
+- `report/figures/`: original vector figures plus PNG previews generated from experimental CSV data
 - `docs/`: permanent research instructions, phase status, experiment provenance, and reproducibility notes
 
 ## Setup and safe usage
@@ -54,6 +59,6 @@ The comprehensive report is maintained from one `report/main.tex` entry point. T
 
 ## Reproducibility status
 
-All 14 repository tests passed, including construction and forward-loss checks for the four original parameter totals. The archived tokenizer loaded successfully. The seven official results were checked against the score sheets. Strict loading of the original checkpoints and exact replay of their archived predictions are pending. See [phase status](docs/PHASE_STATUS.md).
+The Phase-2 audit replayed both ensemble prediction dictionaries exactly from the archived member outputs and reproduced the held-out split and token cache. See the per-phase verification records for completed checks and remaining checkpoint replay work. [Phase status](docs/PHASE_STATUS.md)
 
 **Winner checkpoint guard:** do not use the current generic `efficient_gqa/best.pt` after continued pretraining; the initial winning weights were frozen under `efficient_gqa/milestones/best_100M.pt`. See Phase-1 instructions.

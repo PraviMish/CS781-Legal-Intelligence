@@ -14,19 +14,19 @@
 \newcommand{\ROUGE}{\ensuremath{\mathrm{ROUGE\mbox{-}L}_{F_1}}}
 \newcommand{\ppl}{\ensuremath{\mathrm{PPL}}}
 \title{Developing a Compact, Self-Hosted Legal Language Foundation:\\
-A Reproducible Study of Architecture, Data Mixing, Continued Pretraining, and Decoding}
-\author{CS781 Legal Intelligence Capstone\\\small Master Research Report --- Phase 1}
+Pretraining, Legal Named Entity Recognition, and Reproducible Evaluation}
+\author{CS781 Legal Intelligence Capstone\\\small Master Research Report --- Phases 1 and 2}
 \date{9 November 2026 --- working research edition}
 \begin{document}
 \maketitle
 \begin{abstract}
-This report documents the first phase of a sequential, self-hosted legal natural-language-processing capstone: the construction of a compact, from-scratch legal language model under an official-data-only constraint. We implemented and trained four architecturally different Transformer variants: a conventional causal decoder, an encoder--decoder, a prefix-language-model hybrid, and an efficient causal Transformer using grouped-query attention, rotary position embeddings, RMS normalization, and SwiGLU feed-forward layers. A custom 32,000-token byte-level BPE tokenizer was trained exclusively on the supplied corpus. At approximately 100 million pretraining tokens, the 112.679-million-parameter efficient grouped-query model attained the best official BERTScore F1 of \textbf{0.83479506} on 1,000 hidden-reference continuations. We then tokenized all four available legal sources (approximately 4.488 billion usable BPE tokens) and continued this model to 300, 500, and 700 million consumed tokens. Despite declining validation cross-entropy through 700 million tokens, all three continuation submissions scored below the original winner on the hidden test. A locally successful decoder selection at 500 million tokens likewise failed to improve official BERTScore. We present the corpus construction, architecture definitions, training and resume protocol, seven official submissions, quantitative local and private results, and the resulting lessons about validation objectives, decoding, model selection, and reproducible legal language generation. Later capstone phases will be incorporated into this same master report as independently documented investigations.
+This report documents the first phase of a sequential, self-hosted legal natural-language-processing capstone: the construction of a compact, from-scratch legal language model under an official-data-only constraint. We implemented and trained four architecturally different Transformer variants: a conventional causal decoder, an encoder--decoder, a prefix-language-model hybrid, and an efficient causal Transformer using grouped-query attention, rotary position embeddings, RMS normalization, and SwiGLU feed-forward layers. A custom 32,000-token byte-level BPE tokenizer was trained exclusively on the supplied corpus. At approximately 100 million pretraining tokens, the 112.679-million-parameter efficient grouped-query model attained the best official BERTScore F1 of \textbf{0.83479506} on 1,000 hidden-reference continuations. We then tokenized all four available legal sources (approximately 4.488 billion usable BPE tokens) and continued this model to 300, 500, and 700 million consumed tokens. Despite declining validation cross-entropy through 700 million tokens, all three continuation submissions scored below the original winner on the hidden test. A locally successful decoder selection at 500 million tokens likewise failed to improve official BERTScore. We present the corpus construction, architecture definitions, training and resume protocol, seven official submissions, quantitative local and private results, and the resulting lessons about validation objectives, decoding, model selection, and reproducible legal language generation. Phase 2 adapts these foundations to legal named entity recognition over 70 labeled judgments. Exact-span majority voting across two fully fine-tuned models and a distilled student attained the best official strict macro-F1, \textbf{0.3577}, after retraining on all labeled judgments. The original majority ensemble scored 0.3342. We report the adaptation controls, class imbalance, and error analysis alongside the separate local and official evaluations.
 \end{abstract}
 \tableofcontents
 \newpage
 
 \section{Project Motivation and Scope}
-Legal practice involves large amounts of sensitive natural-language material: judgments, statutes, party submissions, and potentially privileged client records. Sending confidential documents to a remote model endpoint is incompatible with the motivating deployment scenario. The capstone therefore investigates whether an entirely self-hosted language foundation can be trained and adapted within limited compute and model-size constraints. Phase 1 establishes that foundation. Subsequent phases address entity extraction, rhetorical structure, judgment outcomes, statutory references, summarization, and prior-case retrieval; those task-specific chapters will be added when their evidence is finalized.
+Legal practice involves large amounts of sensitive natural-language material: judgments, statutes, party submissions, and potentially privileged client records. Sending confidential documents to a remote model endpoint is incompatible with the motivating deployment scenario. The capstone therefore investigates whether an entirely self-hosted language foundation can be trained and adapted within limited compute and model-size constraints. Phase 1 establishes that foundation, and Phase 2 adapts it to entity extraction. Later phases address rhetorical structure, judgment outcomes, statutory references, summarization, and prior-case retrieval.
 
 The scientific question in Phase 1 is not simply whether a language model can imitate legal prose. It is which compact architecture and training/decoding decisions best support the exact continuation task, and whether improvements in next-token language-model fit also improve the hidden-reference continuation metric. The official evaluation takes a \emph{512-word legal prompt} and requires a \emph{128-word continuation} in a JSON field without repeating the prompt. Official Phase-1 ranking uses BERTScore F1, with ROUGE-L F1 and BLEU-4 as secondary metrics. The dataset provides no public test continuations; local evaluation instead uses held-out documents and internally constructed prompt--continuation examples.
 
@@ -228,16 +228,124 @@ Phase 1 delivered a from-scratch, legal-domain, self-hostable language foundatio
 
 The next research steps are to (a) compare checkpoints under an unchanged decoder and matched local evaluation set, (b) quantify source-dependent error rates using a fixed analysis subset, (c) inspect citation hallucination and repetition with a human-readable audit, and (d) transfer the chosen 100M foundation to later legal NLP tasks with explicit ablations of frozen, partial, adapter-based, and full fine-tuning. No privileged client data were used in this study; deployment suitability still requires security validation and human legal review.
 
+\clearpage
+\section{Phase 2: Legal Named Entity Recognition}
+\label{sec:phase2}
+The second phase adapts the Phase 1 legal models to extract typed entities from full judgments. The official output is one list of \([s,e,\ell]\) triples per document ID, with zero-based character offsets, an exclusive end, and a label from the twelve official types. Strict evaluation matches both boundaries and the label. The primary metric averages class-wise \(F_1\) equally across the twelve classes. Micro-\(F_1\) pools exact true positives, false positives, and false negatives before scoring. Codabench evaluates 35 judgments from fold 3 using private gold labels.
+
+\subsection{Data, split, and character alignment}
+Folds 1 and 2 provide 35 labeled judgments each, with 8,393 annotated entities. The median judgment is 26,620 characters and the longest is 114,044. All 70 exceed 1,280 BPE tokens in the archived tokenization analysis. Figure~\ref{fig:p2-support} shows the annotation imbalance. DATE has 1,575 instances, compared with 184 for R.COUNSEL. The original protocol sampled 3,000 document partitions, each holding out seven judgments from each fold, and minimized the mean deviation from a 20\% per-class holdout with a penalty for missing classes. The selected partition has 56 training judgments with 6,667 annotations and 14 validation judgments with 1,726 annotations. Both contain all classes. The final retraining uses all 70 labeled judgments and retains the fixed test fold.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=.88\linewidth]{figures/phase2/p2_class_support.pdf}
+\caption{Entity support across the 70 labeled judgments. Strict macro-\(F_1\) gives each of these classes equal weight.}
+\label{fig:p2-support}
+\end{figure}
+
+The supplied gold mention strings agreed with every end-exclusive slice. We preserve the document characters and use the archived legal byte-level BPE tokenizer. Trimming whitespace from token offset intervals raised exact boundary alignment from 3.66\% to 98.19\%. A span receives a beginning tag and inside tags only if its endpoints coincide with usable token boundaries. Unrepresentable spans mask overlapping tokens during training. Whitespace-only tokens are also ignored. Decoding gold BIO tags reconstructed 8,241 spans with zero false positives and strict macro-\(F_1\) of 0.99319 on the labeled documents. This oracle quantifies representation loss on those judgments. It uses the gold tags.
+
+Each training or inference window owns up to 256 tokens and carries up to 128 tokens of context on either side. Only owned tokens contribute to the BIO loss. There are 1,491 training, 342 validation, and 976 test windows. The full-data training set contains 1,833 windows. At inference, the system reassembles the owned token predictions in document order before converting BIO tags to character spans. A beginning tag starts a span, as does an inside tag with no active span of its type. Reassembly allows entities to cross an ownership boundary.
+
+\subsection{Adaptation and training protocol}
+All systems use a 25-way BIO classification head with dropout 0.1. The full GQA and decoder systems retain causal attention. The two adapter families use bidirectional attention on each window and mask padded keys.
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Frozen probe.} The 100M-token Efficient GQA foundation is fixed. The 19,225-parameter head learns for four epochs at \(2\times 10^{-3}\), with entity-tag weight 2 and outside-tag weight 1.
+\item \textbf{Full fine-tuning.} The GQA foundation uses the archived best-through-700M-token snapshot, and the decoder uses its 100M-token snapshot. Each model updates the backbone at \(2\times 10^{-5}\) and the head at \(3\times 10^{-4}\), using plain token cross-entropy and up to four epochs.
+\item \textbf{Encoder LoRA.} The 100M-token encoder--decoder contributes its encoder states. Rank-16 additive adapters with scaling \(32/16\) and dropout 0.05 target the encoder attention input and output projections. The frozen base and the trainable BIO head give 446,105 trainable parameters in total. The first run uses plain cross-entropy. The balanced run uses the same adapter initialization and batch schedule, outside-tag weight 0.2, and entity-tag weight 1.
+\item \textbf{Prefix-LM LoRMA+.} On the 100M-token Prefix-LM, the notebook's rank-16 residual multiplicative adapter computes \(z=W_0x\) and \(z+(32/16)BAz+b\) on each attention projection. The base weights are frozen and their dropout is disabled. The adapter and head have 1,198,873 trainable parameters. The outside-tag weight is 0.5. The implementation uses the LoRA and LoRMA families described by \href{https://arxiv.org/abs/2106.09685}{Hu et al.} and \href{https://aclanthology.org/2025.findings-acl.527/}{Mao et al.}, with the projection and bias conventions of the executed notebook.
+\item \textbf{Seven-layer GQA students.} Both students start with embeddings, final normalization, and blocks \(0,2,\ldots,12\) from Phase 1 GQA, and the same seeded new BIO head. The control uses plain cross-entropy. The distilled model minimizes \(0.7\,\mathrm{CE}+0.3\,T^2\,\mathrm{KL}(p_T\|q_T)\) on supervised tokens, with \(T=2\). Here \(p_T\) and \(q_T\) are temperature-scaled teacher and student distributions. The fine-tuned GQA teacher supplies cached per-window logits. Both student runs last four epochs.
+\end{itemize}
+
+Training uses AdamW with weight decay 0.01 and gradient clipping at norm 1. The full, adapter, and student runs accumulate gradients over 16 windows per update, using a 6\% warmup and linear decay. The adapter/head learning rates are \(3\times 10^{-4}\) and \(8\times 10^{-4}\). The student backbone/head rates are \(3\times 10^{-5}\) and \(3\times 10^{-4}\). The adapter budget is six epochs, with early stopping on strict validation macro-\(F_1\). The original trained models are selected by that same validation metric. Full-data training uses four fixed epochs for GQA, decoder, and student, and takes their final weights. Its student uses the full-data GQA teacher.
+
+\subsection{Exact-span voting and validation}
+Full GQA, full decoder, and the distilled student each cast one vote per span. Majority voting accepts a span only when at least two members predict the same start, end, and label. Candidates are considered by decreasing vote count, GQA support, and span length, then by ascending span tuple. A candidate is skipped if it overlaps a span already accepted. The rule applies independently to each judgment.
+
+\begin{table}[htbp]\centering\small
+\caption{Five voting rules on the original 14 validation judgments.}
+\label{tab:p2-votes}
+\begin{tabular}{lrrrrr}
+\toprule
+Rule & Macro-\(F_1\) & Micro-\(F_1\) & TP & FP & FN \\
+\midrule
+Majority & \textbf{0.30658} & 0.45496 & 654 & 495 & 1,072 \\
+GQA confirmed by another member & 0.30323 & \textbf{0.46406} & 623 & 336 & 1,103 \\
+GQA or agreement of both other members & 0.27031 & 0.35830 & 696 & 1,463 & 1,030 \\
+Union & 0.24391 & 0.30967 & 722 & 2,215 & 1,004 \\
+Unanimous & 0.22975 & 0.44444 & 522 & 101 & 1,204 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Majority voting led the strongest single model by 0.03982 macro-\(F_1\) and reduced false positives from 1,435 to 495. Same-label boundary errors fell from 828 to 260 and spurious spans from 381 to 140. The improvement involved a precision--recall trade-off. The ensemble dropped 26 true positives and increased false negatives from 1,046 to 1,072. For R.COUNSEL, \(F_1\) fell from 0.09259 to 0.02817. Before resolving overlaps, exact precision rose from 5.45\% for spans predicted by one member to 25.10\% for two and 83.79\% for three. The models' pairwise exact-span Jaccard scores ranged from 0.213 to 0.245.
+
+Across 500 paired bootstrap resamples of the 14 validation documents, the archived mean ensemble gain was 0.04446 and the central 95\% range was [0.02328, 0.07227]. The same validation set selected the voting rule and supplied the bootstrap draws. This interval describes variation within that analysis and does not estimate an independently selected system's gain on unseen documents.
+
+\subsection{Local and official results}
+\begin{table}[htbp]\centering\small
+\caption{Phase 2 model results. Validation scores use the selected epoch or voting rule. A dash indicates an unavailable score. The three individual full-data ZIPs were archived. Official scores are available for seven submissions.}
+\label{tab:p2-results}
+\begin{tabular}{lrrr}
+\toprule
+Model & Validation macro-\(F_1\) & Codabench macro-\(F_1\) & Submission ID \\
+\midrule
+GQA frozen probe & 0.16766 & -- & -- \\
+GQA full & 0.26676 & 0.2960 & 971886 \\
+Decoder full & 0.24495 & 0.2849 & 971879 \\
+Encoder LoRA & 0.02086 & -- & -- \\
+Encoder LoRA balanced & 0.04995 & 0.0459 & 971880 \\
+Prefix-LM LoRMA+ & 0.06334 & 0.0651 & 971887 \\
+Seven-layer GQA supervised & 0.24068 & -- & -- \\
+Seven-layer GQA distilled & 0.25122 & 0.2736 & 971885 \\
+Original majority ensemble & \textbf{0.30658} & 0.3342 & 971884 \\
+Full-data GQA & -- & -- & -- \\
+Full-data decoder & -- & -- & -- \\
+Full-data distilled GQA & -- & -- & -- \\
+Full-data majority ensemble & -- & \textbf{0.3577} & \textbf{971881} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[!htb]\centering
+\includegraphics[width=\linewidth]{figures/phase2/p2_strict_results.pdf}
+\caption{Local model selection and official Codabench scores on different sets of judgments. The full-data ensemble used all labeled documents and has no independent validation score.}
+\label{fig:p2-results}
+\end{figure}
+
+Distillation raised the student's validation macro-\(F_1\) by 0.01054 against the equally sized supervised control. The student has 68.65M parameters versus the 112.70M-parameter teacher, a 39.1\% reduction, and scored 0.2736 on Codabench. The teacher scored 0.2960. The notebook's repeated evaluation of the frozen probe and the teacher in separate analysis cells yielded small differences from the selected validation scores. The registry keeps these measurements separate.
+
+The strongest official project submission is the full-data majority ensemble, with strict macro-\(F_1\) of \textbf{0.3577} (ID 971881). Its 0.0235 gain over the original majority ensemble compares the two submitted systems. The retraining changed training coverage, seeds, and selection protocol, so the gain cannot be attributed to the additional judgments alone. The Codabench screenshot establishes the reported scores for these submissions. Hidden class-wise scores and overall competition rank are unavailable.
+
+\subsection{Why the adapter scores may be weak}
+\paragraph{Observed behavior.}
+The outside tag accounts for 341,310 of 374,030 supervised training tokens (91.25\%). Original LoRA scored zero validation macro-\(F_1\) in its first two epochs while its training loss fell. All 14 LoRA \(B\) tensors had nonzero norms at the selected checkpoint, and a small training-document sample still scored just 0.04136 strict macro-\(F_1\). The balanced variant raised macro recall from 0.02898 to 0.10782 and validation macro-\(F_1\) from 0.02086 to 0.04995. False positives rose from 1,257 to 8,235 as true positives rose from 71 to 286. Prefix-LM LoRMA+ peaked at 0.06334 in epoch 3 while training loss continued to fall. It produced 246 true positives and 4,646 false positives on validation, with zero exact hits for RESP, A.COUNSEL, and WIT.
+
+\begin{figure}[!htb]\centering
+\includegraphics[width=.95\linewidth]{figures/phase2/p2_adapter_training.pdf}
+\caption{Executed adapter training histories. Cross-entropy is comparable across epochs within each run. The runs use different outside-tag weights.}
+\label{fig:p2-adapters}
+\end{figure}
+
+\paragraph{Plausible explanations.}
+Plain token cross-entropy gives the frequent outside tag most of the supervised positions. Reducing its weight may improve sensitivity while encouraging extra entities, as observed for balanced LoRA. Token-level loss also gives partial credit to correctly tagged tokens inside a span, whereas strict scoring requires both endpoints and the class. The high BIO oracle score suggests alignment loss alone is too small to explain the measured adapter scores on labeled data. Limited rank, adapting only attention projections, and reusing frozen features from a language-modeling objective may each restrict transfer to boundary detection and role typing. The small number of annotated documents, uneven class support, and the 512-token context may also limit evidence for rare roles and long-range references.
+
+\paragraph{Limits of attribution.}
+The adapters used different architectures, pretraining snapshots, attention behavior, class weights, and trainable fractions from the fully fine-tuned models. The study contains one validation partition and one execution per main configuration. It does not isolate rank, projection targets, foundation quality, or calibration effects. The balanced LoRA comparison supports a sensitivity trade-off in this setting. The weaker adapter scores establish the outcome of these configurations on this task, with matched-backbone and repeated-seed comparisons needed to separate the possible mechanisms.
+
+\subsection{Reconstruction checks}
+The released pipeline regenerated the archived split and all 105 token records from the official files and tokenizer. All twelve archived submissions passed document ID, label, offset, and ZIP structure checks. Both ensemble submissions were reproduced span for span from their archived members, and the five validation voting scores and paired diagnostics were reproduced from the saved validation predictions. The probe head and three adapter states loaded into the reconstructed models. Large original backbones and full-model checkpoints exceeded the available Drive transfer limit, leaving original-weight inference and training replay unverified. The recorded Codabench scores come from the submitted archives and the supplied score screenshot.
+
+
 \appendix
 \section{Supplementary Reproduction Notes}
 \subsection{Experiment ledger and provenance}
-The repository's \method{code/phase1/experiments/official\_and\_local\_results.csv} records all seven submitted variants, their official primary and secondary metrics, training budget, decoding configuration, model size and locally available metrics. The \method{validation\_curve.csv}, \method{decoding\_sweep.csv}, and \method{full\_corpus\_summary.csv} files are machine-readable sources for figures in this report. The original executed notebook is the archival record and is intentionally not copied verbatim into the public repository because it includes redundant restore cells and environment-specific paths. All repo visualizations are generated by \method{code/phase1/analysis/figures.py}, so there is no dependency on screenshot images.
+The repository's \method{code/phase1/experiments/official\_and\_local\_results.csv} records all seven submitted variants, their official primary and secondary metrics, training budget, decoding configuration, model size and locally available metrics. The \method{validation\_curve.csv}, \method{decoding\_sweep.csv}, and \method{full\_corpus\_summary.csv} files are machine-readable sources for Phase 1 figures. The original executed notebook is the archival record. The public repository contains portable code derived from it. Each phase's \method{analysis/figures.py} generates its figures from the checked-in aggregate records.
 
 \subsection{Suggested verification before final freezing}
 A reproducibility check should instantiate each of the four model classes and confirm its original parameter count, load the corresponding trusted \method{best.pt} file with strict state-dictionary checking, compare fixed-prompt logits between the original executed notebook and the refactored module, and regenerate a small deterministic set of predictions with matching legacy decoder settings. Next verify official ID equality and exactly 128 words per prediction, then ZIP \method{prediction.json} at the archive root. Because the original weights were not included with this working report's source archive, full checkpoint compatibility is a pending integration test, not a completed fact.
 
 % --- Future phases are added here as coherent scientific sections. ---
-% Phase 2: Legal Named Entity Recognition
 % Phase 3: Rhetorical Role Prediction
 % Phase 4: Court Judgment Prediction
 % Phase 5: Legal Statute Identification

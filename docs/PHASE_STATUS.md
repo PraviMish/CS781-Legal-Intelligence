@@ -18,8 +18,24 @@
 - [ ] Verify regenerated predictions against archived original `prediction.json` examples
 - [ ] Replay training from the archived tokenizer, cache and runtime settings
 
+## Phase 2 research release
+
+- [x] Audit the executed notebook, Drive run artifacts, and seven Codabench entries
+- [x] Reconstruct all 11 trained variants, five original voting rules, and the full-data winner
+- [x] Regenerate the archived split and all 105 token records from the official files
+- [x] Validate all 12 submission ZIPs and replay both majority ensembles exactly from the archived member outputs
+- [x] Recompute the five held-out voting results, false-positive counts, and paired bootstrap
+- [x] Load and check the four original small head or adapter checkpoints with the reconstructed model shapes
+- [x] Pass all 22 repository tests, including the 14 Phase-1 tests
+- [x] Record aggregate results, generate three figure pairs, and extend the master report
+- [x] Compile the 16-page master report and inspect the rendered layout
+- [ ] Load original Phase-1 backbones and full Phase-2 checkpoints and compare regenerated member predictions
+- [ ] Replay the original training runs with the archived weights and GPU numerical settings
+
+The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
+
 ## Future phases
-Phases 2--7 to be added individually after reviewing the phase's executed notebook, Codabench score sheets and saved artifacts. Do not invent or preemptively publish their findings.
+Phases 3--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
 
 ## Original artifacts required for replay
 

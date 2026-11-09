@@ -1,0 +1,5 @@
+Category,GQA,majority
+Incorrect boundary,828,260
+Spurious entity,381,140
+Boundary and label mismatch,208,71
+Wrong entity label,18,24

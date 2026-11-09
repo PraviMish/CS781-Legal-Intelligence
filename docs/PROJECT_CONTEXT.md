@@ -31,3 +31,7 @@ Build a self-hosted legal language foundation and show how the same legal-only, 
 
 ## Phase-1 established result
 Seven official submissions across four architectures and continued-training/decoding variants. Initial Efficient GQA at 100M tokens won official BERTScore F1 0.83479506; 300M, 500M-tuned, and 700M-tuned variants scored below it despite lower held-out next-token loss. The full official corpus yielded ~4.488B usable BPE tokens; winner architecture uses 14 blocks, 768 hidden, 12 query/4 KV heads, RoPE, RMSNorm, SwiGLU, 2048 FFN and 32k BPE, totaling 112,678,656 parameters. See phase README and CSV registry for full detail.
+
+## Phase-2 established result
+
+The full-data majority ensemble led the seven recorded project submissions with official strict macro-F1 **0.3577** (971881). The original majority ensemble scored **0.3342** (971884). Both vote across fully fine-tuned GQA and decoder models and a seven-layer distilled GQA student. The original protocol uses a 56/14 document split for model and voting-rule selection. The winning protocol retrains on all 70 labeled judgments for four fixed epochs and uses their final checkpoints. [Phase-2 run and artifact mapping](../code/phase2/README.md)
