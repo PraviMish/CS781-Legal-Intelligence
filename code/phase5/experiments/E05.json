@@ -1,0 +1,12 @@
+{
+  "arch": "encoder_decoder",
+  "method": "lora",
+  "loss": "asl",
+  "lr": 0.0004,
+  "epochs": 4,
+  "seq_len": 512,
+  "n_windows": 3,
+  "revision": "93b0059be756c6c461f3a225de25aabda7d5f84a",
+  "window_size": 512,
+  "windows_per_case": 3
+}

@@ -1,0 +1,12 @@
+{
+  "arch": "efficient_gqa",
+  "method": "full",
+  "student": true,
+  "loss": "weighted_bce",
+  "lr": 4e-05,
+  "epochs": 4,
+  "teacher": "E01_GQA_LoRMA",
+  "windows": "windows_3x512_v1",
+  "window_size": 512,
+  "windows_per_case": 3
+}
