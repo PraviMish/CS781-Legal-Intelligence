@@ -49,3 +49,11 @@ checks all ten saved ZIPs against the official test IDs without model weights.
 The separate source-only E01 inference package requires the original Phase 4
 classifier and uses its fixed 0.51 threshold. See the phase README for commands
 and the original-weight verification limits.
+
+## Phase 6 legal abstractive summarization
+
+Use the pinned official Phase_6_Summ dataset, original Phase 1 tokenizer and
+archived validation IDs. The Phase 6 CLI supports all three protocols. The
+separate E05 source package requires the archived V3 step 7,750 model and
+uses the raw hierarchical decoder. See the [Phase 6 README](../code/phase6/README.md)
+for commands and the [evidence audit](PHASE6_EVIDENCE.md) for replay limits.

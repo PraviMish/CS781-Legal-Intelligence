@@ -16,7 +16,7 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-The research release covers Phases 1--4. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
+The research release covers Phases 1–4 and 6. Phase 5 has a partial evidence recovery.
 
 ## Phase-1 finding
 
@@ -46,12 +46,21 @@ binary court judgment prediction, ahead of the distilled-student blend
 (0.7369) and Prefix-LM blend (0.7353). E09 led on clean development.
 [Phase-4 experiments and reproduction](code/phase4/README.md)
 
+## Phase 5 recovery
+
+[Recovered local results and release status](docs/PHASE5_RECOVERY.md)
+
+## Phase 6 | Legal summarization
+
+V3 Efficient GQA + LoRA (E05) achieved the best recorded official BERTScore F1, **0.8459** (submission **1026556**). The gold-only student E07 led on local ROUGE. [Experiments and reproduction](code/phase6/README.md)
+
 ## Contents
 
 - `code/phase1/`: four original architectures, tokenizer/data preparation, training, evaluation, generation, official submission packaging, configuration, and experimental records
 - `code/phase2/`: exact-span legal NER, frozen and fully tuned models, LoRA and LoRMA+ adapters, knowledge distillation, voting, and official submission packaging
 - `code/phase3/`: rhetorical roles, context packing, adaptation, distillation, and structured decoding
 - `code/phase4/`: court judgment prediction, eight trained runs, two blends, and saved-output replay
+- `code/phase6/`: legal summarization across three revisions, seven official submissions, passage alignment, and two distillation objectives
 - `code/common/`: shared atomic checkpointing, artifact and RNG helpers
 - `code/tests/`: software smoke tests
 - `code/requirements.txt`: Python dependencies

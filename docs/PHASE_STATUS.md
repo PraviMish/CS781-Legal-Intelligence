@@ -35,7 +35,8 @@
 The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
 
 ## Future phases
-Phases 5--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
+Phase 5 release recovery remains open. Phase 7 is planned after its executed
+notebook, Codabench score sheets and saved artifacts have been audited.
 
 ## Original artifacts required for replay
 
@@ -69,3 +70,26 @@ See [Phase-3 evidence audit](PHASE3_EVIDENCE_AUDIT.md) and
 - [ ] Replay E01/E04/E05/E06 from original weights and rerun original GPU training
 
 [Phase-4 methods, records and verification](../code/phase4/README.md)
+
+## Phase 5 recovery
+
+- [x] Check the GitHub branch history and recover the six-model local comparison
+- [x] Identify the executed resume notebook, Drive checkpoints and submission ZIPs
+- [ ] Recover a portable Phase 5 release and official Codabench score record
+
+[Phase 5 recovery notes](PHASE5_RECOVERY.md)
+
+## Phase 6 research release
+
+- [x] Audit original, V2 and V3 notebooks, artifact manifests and seven official scores
+- [x] Port the 20 recorded version/run configurations and their preprocessing, training, evaluation and submission paths
+- [x] Confirm the official dataset identities, archived split and tokenizer
+- [x] Verify 19 archived submissions and recompute available validation scores
+- [x] Package the V3 E05 winner and run a standalone synthetic-weight submission
+- [x] Pass the Phase 6 tests and compile and inspect the 36-page master report
+- [ ] Load the original E05 checkpoint and reproduce predictions from its weights
+- [ ] Repeat the full GPU training and recover official secondary score sheets
+
+The 463 MB original E05 checkpoint exceeds the connected Drive transfer
+limit. E05 remains the official winner at BERTScore F1 0.8459.
+[Evidence and verification](PHASE6_EVIDENCE.md)

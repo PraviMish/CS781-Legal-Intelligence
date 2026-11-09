@@ -52,3 +52,10 @@ the ten recorded Codabench results at **0.7393 macro-F1**. The selected
 checkpoint is epoch 2, with a 0.51 threshold on class-1 probability.
 Clean-development selection and official ranking differ. All ten label
 sets were replayed from archived outputs. [Phase-4 README](../code/phase4/README.md)
+
+## Phase 6 established result
+
+V3 Efficient GQA + LoRA (E05) leads seven official submissions with BERTScore F1
+**0.8459** (1026556). The submitted checkpoint is update 7,750 with raw
+hierarchical decoding. E07 leads local ROUGE on 96 held-out documents.
+[Phase 6 methods and records](../code/phase6/README.md)

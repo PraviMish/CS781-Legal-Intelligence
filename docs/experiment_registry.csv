@@ -51,3 +51,23 @@ phase,variant,tokens_millions,decoder,official_primary_bertscore_f1,official_rou
 4,P4_E08_GQA_KD_Student384x6,,,,,,,,,,"Case-level internal validation, clean development, and hidden Codabench test",Saved notebook probabilities and user-provided Codabench scores,,,,,,,,,0.664288724851,0.601470096893,0.6126,Distilled Transformer
 4,P4_E09_GQA_PrefixLM_Ensemble,,,,,,,,,,"Case-level internal validation, clean development, and hidden Codabench test",Saved notebook probabilities and user-provided Codabench scores,,,,,,,,,0.779720381007,0.734599918174,0.7353,GQA + Prefix-LM
 4,P4_E10_GQA_KDStudent_Ensemble,,,,,,,,,,"Case-level internal validation, clean development, and hidden Codabench test",Saved notebook probabilities and user-provided Codabench scores,,,,,,,,,0.779734675005,0.732926233512,0.7369,GQA + distilled student
+6,original/E01,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,original/E02,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,original/E03,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,original/E04,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,original/E05,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,original/E06,,section,,,,,,,,32 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E01,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E02,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E03,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E04,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E05,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E06,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v2/E07_gold,,hierarchical,,,,,,,,64 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E01,,hierarchical_raw,0.8217,,,sub1.zip update 7917,,,1026549,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E02,,hierarchical_raw,0.8442,,,sub2.zip update 7917,,,1026551,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E03,,hierarchical_raw,0.8239,,,sub3.zip update 7750,,,1026552,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E04,,hierarchical_raw,0.8438,,,sub4.zip update 7750,,,1026554,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E05,,hierarchical_raw,0.8459,,,sub5.zip update 7750,,,1026556,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E06,,hierarchical_raw,0.8232,,,sub6.zip update 7917,,,1026558,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,
+6,v3/E07_gold,,hierarchical_raw,0.8455,,,sub7.zip update 7500,,,1026559,96 held-out documents for local ROUGE,Phase 6 archived comparison CSV; V3 official Codabench score screenshot,,,,,,,,,,,,

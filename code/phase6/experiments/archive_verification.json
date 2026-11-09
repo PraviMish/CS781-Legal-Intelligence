@@ -1,0 +1,168 @@
+{
+  "archives": {
+    "FINAL_V2_E01.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "ef6cf6fb4683396b531083ecf125120345c5cb5ddabf172751e768845f50cd37",
+      "mean_summary_words": 147.86
+    },
+    "FINAL_V2_E02.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "5135287c7e08cbe836a097328625dc6b6660245f4580f7fbc4560f441f4316c6",
+      "mean_summary_words": 270.53
+    },
+    "FINAL_V2_E03.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "22b70237290f9cd1e112c1a61f09d85bec5d9e2938c71905511d82b4b8a72021",
+      "mean_summary_words": 191.11
+    },
+    "FINAL_V2_E04.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "6216bc7aade707aa4aeb3d0525522bc0a47aa7e2132eb94fe0b9843972aeb2eb",
+      "mean_summary_words": 193.26
+    },
+    "FINAL_V2_E05.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "b4969b948a5ec68b987de963460205d8f7454cfa63999e12b1e1d66edb52f48b",
+      "mean_summary_words": 253.65
+    },
+    "FINAL_V2_E06.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "f5b7307415e36b88c73f55681c2903c5aa99c2a7814aaffd3dbc55ccd35df30a",
+      "mean_summary_words": 166.97
+    },
+    "FINAL_V3_E01.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "af1be3f62fb938451cf2f0c3df524657f9ce110571b56d00bee8df416a204ae5",
+      "mean_summary_words": 146.7
+    },
+    "FINAL_V3_E02.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "9938b7b2d442f076a893785876286f408decf5d99c19afaf4f85165d10645172",
+      "mean_summary_words": 280.88
+    },
+    "FINAL_V3_E03.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "b77c435cc263725849ab0131ac3c7d55c96aca5cb444e6f51460ac394e0d9b9c",
+      "mean_summary_words": 173.09
+    },
+    "FINAL_V3_E04.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "0b795ebfb295d72f338e4a74da855f3447834313d17260e316917097a93e7605",
+      "mean_summary_words": 266.45
+    },
+    "FINAL_V3_E05.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "1304308f991cc21589ca8640cae38196af3750531f89ca492661769a3efe133a",
+      "mean_summary_words": 278.88
+    },
+    "FINAL_V3_E06.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "747a66cb1130b03836680108453298289a6bb9a82d072a5b50297356a97e209e",
+      "mean_summary_words": 162.96
+    },
+    "FINAL_V3_E07_gold.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "e4f0c12ab60845e15fd4cd8c354ab2218ac3c76026b73f03359e7d88a8ebde94",
+      "mean_summary_words": 289.95
+    },
+    "submissions_E01.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "f5c86126bab1743dbfc57cae33298e2e363d8f98beafbe4327d4d88ba3f45cd5",
+      "mean_summary_words": 166.13
+    },
+    "submissions_E02.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "5d5533ec644f7dd651972f6fcc72f47ffb215a387ce0a4415f58fea3aadcc717",
+      "mean_summary_words": 147.88
+    },
+    "submissions_E03.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "4a04fd9909c4bcda51c95b0bbe9d41ca8ff178ac45e2c090c7f0ca867eb1b3ec",
+      "mean_summary_words": 153.98
+    },
+    "submissions_E04.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "5bf3c7260dec6984078bd048caabe5cee86bc93deaea21430c72d139b39a4636",
+      "mean_summary_words": 127.32
+    },
+    "submissions_E05.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "78def6e320dedd8ea6f82b773c793dfef56f7800900ea84e075ae2963e1e8f18",
+      "mean_summary_words": 147.84
+    },
+    "submissions_E06.zip": {
+      "count": 100,
+      "test_order": true,
+      "zip_sha256": "eeffb83d2c535f86dc5b4b62209ac974cfe7d667f51aa0b4ca604ff64fffb223",
+      "mean_summary_words": 167.23
+    }
+  },
+  "recomputed_validation": {
+    "v2_E02": {
+      "count": 64,
+      "rouge1": 0.40423748331533843,
+      "rougeL": 0.22176817851440828,
+      "mean_generated_words": 279.328125
+    },
+    "v3_E02": {
+      "raw": {
+        "count": 96,
+        "rouge1": 0.4128736488580779,
+        "rougeL": 0.22779798637701243,
+        "mean_generated_words": 302.4166666666667
+      },
+      "grounded": {
+        "count": 96,
+        "rouge1": 0.39517870160799334,
+        "rougeL": 0.22235875045380146,
+        "mean_generated_words": 278.9791666666667
+      }
+    },
+    "v3_E05": {
+      "raw": {
+        "count": 96,
+        "rouge1": 0.40923233889833144,
+        "rougeL": 0.22361661329237514,
+        "mean_generated_words": 294.8645833333333
+      },
+      "grounded": {
+        "count": 96,
+        "rouge1": 0.39310889724035186,
+        "rougeL": 0.21860073432667107,
+        "mean_generated_words": 273.1666666666667
+      }
+    },
+    "v3_E07": {
+      "raw": {
+        "count": 96,
+        "rouge1": 0.4234182176723403,
+        "rougeL": 0.23098926236462525,
+        "mean_generated_words": 319.03125
+      },
+      "grounded": {
+        "count": 96,
+        "rouge1": 0.39379893982349684,
+        "rougeL": 0.21924942239542186,
+        "mean_generated_words": 283.5729166666667
+      }
+    }
+  }
+}
