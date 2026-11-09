@@ -16,7 +16,7 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-The research release covers Phases 1 and 2. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
+The research release covers Phases 1--3. Each phase includes runnable experiment code, an aggregate results ledger, and a chapter in the master report.
 
 ## Phase-1 finding
 
@@ -25,6 +25,19 @@ Four architecturally distinct models were built from scratch with a new 32,000-t
 ## Phase-2 finding
 
 The full-data majority ensemble achieved **0.3577** strict macro-F1 on Codabench (submission **971881**), compared with **0.3342** for the original majority ensemble. It votes over exact character spans predicted by GQA, a decoder-only model, and a distilled GQA student. The local study includes a frozen probe, full fine-tuning, LoRA and LoRMA+, a supervised student control, and five voting rules. [Phase-2 README](code/phase2/README.md)
+
+<!-- PHASE3_RESEARCH_RELEASE -->
+## Phase-3 finding: rhetorical roles
+
+**C2: bidirectional neighboring-sentence context + Phase-1 Efficient GQA LoRA**
+won the recorded Phase-3 Codabench entries: **Macro-F1 0.4249**, submission
+**989815**. The 16 training runs and two inference-only variants are documented
+in [the Phase-3 README](code/phase3/README.md), with official-status provenance
+and independently runnable source. Class-wise metrics and generated figures
+appear in the newly added section of [the master scientific report](report/main.tex).
+The separate best-model-only source code is distributed apart from the public
+all-experiment research repository.
+
 
 ## Contents
 

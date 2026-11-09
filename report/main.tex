@@ -14,8 +14,8 @@
 \newcommand{\ROUGE}{\ensuremath{\mathrm{ROUGE\mbox{-}L}_{F_1}}}
 \newcommand{\ppl}{\ensuremath{\mathrm{PPL}}}
 \title{Developing a Compact, Self-Hosted Legal Language Foundation:\\
-Pretraining, Legal Named Entity Recognition, and Reproducible Evaluation}
-\author{CS781 Legal Intelligence Capstone\\\small Master Research Report --- Phases 1 and 2}
+Pretraining, Legal Named Entity Recognition, Rhetorical Roles, and Reproducible Evaluation}
+\author{CS781 Legal Intelligence Capstone\\\small Master Research Report --- Phases 1--3}
 \date{9 November 2026 --- working research edition}
 \begin{document}
 \maketitle
@@ -336,6 +336,8 @@ The adapters used different architectures, pretraining snapshots, attention beha
 \subsection{Reconstruction checks}
 The released pipeline regenerated the archived split and all 105 token records from the official files and tokenizer. All twelve archived submissions passed document ID, label, offset, and ZIP structure checks. Both ensemble submissions were reproduced span for span from their archived members, and the five validation voting scores and paired diagnostics were reproduced from the saved validation predictions. The probe head and three adapter states loaded into the reconstructed models. Large original backbones and full-model checkpoints exceeded the available Drive transfer limit, leaving original-weight inference and training replay unverified. The recorded Codabench scores come from the submitted archives and the supplied score screenshot.
 
+
+\input{phase3.tex}
 
 \appendix
 \section{Supplementary Reproduction Notes}

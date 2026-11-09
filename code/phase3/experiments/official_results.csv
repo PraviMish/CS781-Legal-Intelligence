@@ -1,0 +1,19 @@
+index,experiment,submission_id,filename,status,official_macro_f1,notes
+1,A1_decoder_lora,989798,submission1.zip,Finished,0.3310,
+2,A2_encdec_lora,989799,submission2.zip,Finished,0.1361,
+3,A3_prefix_lora,989800,submission3.zip,Finished,0.2867,
+4,A4_gqa100_lora,989802,submission4.zip,Finished,0.3299,
+5,A5_gqa700_lora,989804,submission5.zip,Finished,0.3714,
+6,B1_lorma_plus,989805,submission6.zip,Failed,,No score shown; failure reason not supplied
+7,B2_ia3,989807,submission7.zip,Preparing,,Pending in supplied screenshot
+8,B3_prefix,989809,submission8.zip,Finished,0.2379,
+9,B4_full,989810,submission9.zip,Finished,0.4005,
+10,C1_previous_context,989811,submission10.zip,Finished,0.3976,
+11,C2_bidirectional_context,989815,submission11.zip,Finished,0.4249,Duplicate submitting entry 989813 also shown
+12,C3_document_viterbi,989819,submission12.zip,Finished,0.3791,Duplicate submitting entry 989818 also shown
+13,D1_CL_only,989821,submission13.zip,Finished,0.2586,
+14,D2_IT_only,989822,submission14.zip,Finished,0.3710,
+15,D3_domain_specialist_hybrid,989823,submission15.zip,Finished,0.3957,
+16,E1_student_supervised,989824,submission16.zip,Finished,0.3679,
+17,E2_student_distilled,989825,submission17.zip,Finished,0.3638,
+18,F1_balanced_lora,989828,submission18.zip,Failed,0.3703,Displayed numeric value despite Failed status; not counted as completed

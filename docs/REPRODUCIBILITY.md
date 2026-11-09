@@ -26,3 +26,14 @@ Use the official dataset's `Phase_2_LNER/Train` and `Phase_2_LNER/Test` files. P
 The Phase-2 CLI reads the archived prediction JSON or ZIP for CPU-only ensemble replay. Run `python -m phase2 --help` for the training, evaluation, inference, voting, and validation commands. Keep raw files, caches, and weights outside the checkout.
 
 Regenerate the three Phase-2 figures with `python code/phase2/analysis/figures.py` from the repository root. Compile `main.tex` from `report/` with Tectonic, or with two `pdflatex` passes.
+
+## Phase 3 rhetorical-role prediction
+Use official Hugging Face dataset `Exploration-Lab/CS-781-Capstone`,
+folder `Phase_3_RR`; preserve the original legal BPE tokenizer and archived
+Phase-1 100M/700M checkpoint versions. The notebook's C2 official winner is a
+causal GQA classifier with previous and next sentence tokens placed ahead of
+the target sentence, not a bidirectional-attention model. See
+[Phase-3 README](../code/phase3/README.md) for commands to prepare, train,
+resume, evaluate and generate one label per original test sentence.
+The original large checkpoints cannot be published or independently strict-
+loaded in this source-only release; full prediction equivalence is pending.

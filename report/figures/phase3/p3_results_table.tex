@@ -1,0 +1,28 @@
+\begin{longtable}{@{}r p{.44\linewidth} r r p{.14\linewidth}@{}}
+\caption{Complete Phase-3 submission chronology. Development Macro-F1 is from the executed notebook and official Macro-F1 from the supplied Codabench screenshot. A numeric result in a Failed row is \emph{not} a confirmed completed evaluation. The D3 hybrid was not independently scored on development data.}\label{tab:p3-all}\\
+\toprule
+\# & Model or variant & Dev F1 & Official F1 & Status \\
+\midrule\endfirsthead
+\toprule
+\# & Model or variant & Dev F1 & Official F1 & Status \\
+\midrule\endhead
+1 & A1\_\allowbreak decoder\_\allowbreak lora & 0.2934 & 0.3310 & Finished \\
+2 & A2\_\allowbreak encdec\_\allowbreak lora & 0.1204 & 0.1361 & Finished \\
+3 & A3\_\allowbreak prefix\_\allowbreak lora & 0.2350 & 0.2867 & Finished \\
+4 & A4\_\allowbreak gqa100\_\allowbreak lora & 0.3073 & 0.3299 & Finished \\
+5 & A5\_\allowbreak gqa700\_\allowbreak lora & 0.3291 & 0.3714 & Finished \\
+6 & B1\_\allowbreak lorma\_\allowbreak plus & 0.3171 & -- & Failed \\
+7 & B2\_\allowbreak ia3 & 0.2288 & -- & Preparing \\
+8 & B3\_\allowbreak prefix & 0.1983 & 0.2379 & Finished \\
+9 & B4\_\allowbreak full & 0.3330 & 0.4005 & Finished \\
+10 & C1\_\allowbreak previous\_\allowbreak context & 0.3424 & 0.3976 & Finished \\
+11 & \textbf{C2\_\allowbreak bidirectional\_\allowbreak context} & 0.3851 & \textbf{0.4249} & Finished \\
+12 & C3\_\allowbreak document\_\allowbreak viterbi & 0.3527 & 0.3791 & Finished \\
+13 & D1\_\allowbreak CL\_\allowbreak only & 0.2215 & 0.2586 & Finished \\
+14 & D2\_\allowbreak IT\_\allowbreak only & 0.3020 & 0.3710 & Finished \\
+15 & D3\_\allowbreak domain\_\allowbreak specialist\_\allowbreak hybrid & -- & 0.3957 & Finished \\
+16 & E1\_\allowbreak student\_\allowbreak supervised & 0.3234 & 0.3679 & Finished \\
+17 & E2\_\allowbreak student\_\allowbreak distilled & 0.3200 & 0.3638 & Finished \\
+18 & F1\_\allowbreak balanced\_\allowbreak lora & 0.3459 & 0.3703 & Failed \\
+\bottomrule
+\end{longtable}

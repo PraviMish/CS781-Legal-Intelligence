@@ -1,0 +1,7 @@
+split,domain,documents,sentences,median_sentences_per_doc,max_sentences_per_doc
+dev,CL,5,1396,184.0,848
+dev,IT,5,746,120.0,382
+test,CL,5,1339,114.0,942
+test,IT,5,858,159.0,420
+train,CL,40,10593,120.5,1816
+train,IT,40,6252,126.5,442

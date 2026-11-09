@@ -1,0 +1,3 @@
+model,sentences_per_second,peak_memory_gb,elapsed_seconds
+Teacher_B4_full,1035.165766,0.745900,0.741910
+Distilled_student_E2,3823.250835,0.745168,0.200876

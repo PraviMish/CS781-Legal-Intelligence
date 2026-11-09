@@ -35,10 +35,24 @@
 The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
 
 ## Future phases
-Phases 3--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
+Phases 4--7 to be added individually after reviewing each phase's executed notebook, Codabench score sheets, and saved artifacts.
 
 ## Original artifacts required for replay
 
 Checkpoint weights, token caches, evaluation examples and archived predictions are kept outside the repository. The Phase-1 audit could locate the winning checkpoint but could not retrieve the approximately 451 MB file through the available Drive connection. Synthetic checkpoint round-trip tests cover the repository's own checkpoint writer and reader.
 
 **Winning checkpoint identity:** `models/efficient_gqa/milestones/best_100M.pt` should be supplied by the original Drive artifacts; later `best.pt` was overwritten during continuation. Validate token metadata before packaging predictions.
+
+## Phase 3 research release (9 November 2026)
+- [x] 16 trained variants and 2 inference-only strategies reconstructed from notebook
+- [x] Local and official test metrics recorded separately; statuses captured
+- [x] 13-role data parsing, context packing, adapter definitions, resume-aware CLI
+- [x] Source-only tests and generated scientific charts and results table
+- [x] Best official C2 at Macro-F1 0.4249 (submission 989815)
+- [x] Comprehensive Phase-3 LaTeX section and source-only best-model package
+- [ ] Strict loading and deterministic replay of original full pretrained GQA + C2 adapter
+- [x] Complete master report compile with all original Phase-1/2 figures
+- [ ] Original GPU training reruns / repeated-seed confidence analysis
+
+See [Phase-3 evidence audit](PHASE3_EVIDENCE_AUDIT.md) and
+[verification notes](PHASE3_VERIFICATION.md).

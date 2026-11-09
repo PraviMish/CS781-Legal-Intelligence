@@ -1,0 +1,14 @@
+label,CL_train,IT_train,CL_dev,IT_dev
+Fact,2979,1119,249,195
+Issue,17,90,3,12
+ArgumentPetitioner,976,637,344,56
+ArgumentRespondent,996,352,236,36
+Statute,367,732,58,62
+Dissent,284,0,0,0
+PrecedentReliedUpon,1305,640,142,112
+PrecedentNotReliedUpon,209,360,0,50
+PrecedentOverruled,0,3,0,0
+RulingByLowerCourt,438,436,56,46
+RatioOfTheDecision,2856,1445,288,115
+RulingByPresentCourt,113,194,18,31
+None,53,244,2,31
