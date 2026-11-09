@@ -1,0 +1,181 @@
+{
+  "submissions": {
+    "E01": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "61c8613c7cd612ee27d5e9438b8814708e9b511528d88968c44a5647be8a557f",
+      "mean_pred_labels": 5.167063522543974
+    },
+    "E02": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "e46074a817d9adb4f0542f264f33a777a0d91cc1a5a925f38ffe289f36b81951",
+      "mean_pred_labels": 4.657116522006299
+    },
+    "E03": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "34e62d8baed8139d024d504e49769fd4977677e8e41c6ec0a3faea5db7db7c21",
+      "mean_pred_labels": 5.471541593056302
+    },
+    "E04": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "ff42c48375238d7d95705b1672d25f8de425f5fdeae3cd3e8fa4eab00271ba5f",
+      "mean_pred_labels": 5.867654965819187
+    },
+    "E05": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "33deed9bad048df8c18497e2cb0b5eb0a32b7ad9de587f741ffeff562af5f9c8",
+      "mean_pred_labels": 7.538674245333743
+    },
+    "E06": {
+      "documents": 13019,
+      "official_order": true,
+      "sha256": "d7c17e0dbda39dbe1eba8ba16c2d42259aca213a6e784c633f1052b417aa7243",
+      "mean_pred_labels": 5.035102542437976
+    }
+  },
+  "dev_calibration_replay": {
+    "E01": {
+      "macro_f1": 0.3645335501465849,
+      "micro_f1": 0.4622209839368189,
+      "subset_accuracy": 0.02936843139180827,
+      "mean_pred_labels": 5.250270110991062,
+      "global_threshold": 0.47500000000000014,
+      "global_macro_f1": 0.34323298794506796,
+      "regularized_macro_f1": 0.3645335501465849,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.3913965754471793,
+        "micro_recall": 0.5137460492650379
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.4034759508353133,
+        "micro_recall": 0.5409873074800582
+      }
+    },
+    "E02": {
+      "macro_f1": 0.39564955820036063,
+      "micro_f1": 0.49793388429752067,
+      "subset_accuracy": 0.05038797760534329,
+      "mean_pred_labels": 4.6413908260485215,
+      "global_threshold": 0.5250000000000001,
+      "global_macro_f1": 0.37411671830716153,
+      "regularized_macro_f1": 0.39564955820036063,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.4443896958826892,
+        "micro_recall": 0.5655696583554909
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.45900876116307615,
+        "micro_recall": 0.5440726433552401
+      }
+    },
+    "E03": {
+      "macro_f1": 0.3688722619634581,
+      "micro_f1": 0.4649318205475174,
+      "subset_accuracy": 0.030939986248895,
+      "mean_pred_labels": 5.520479324231411,
+      "global_threshold": 0.5250000000000001,
+      "global_macro_f1": 0.34483217859191717,
+      "regularized_macro_f1": 0.3688722619634581,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.39074618374893333,
+        "micro_recall": 0.5168815532032308
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.39735606006689916,
+        "micro_recall": 0.5602016756133046
+      }
+    },
+    "E04": {
+      "macro_f1": 0.3096727724135293,
+      "micro_f1": 0.4000396786033132,
+      "subset_accuracy": 0.015224437678027699,
+      "mean_pred_labels": 5.9860524506433554,
+      "global_threshold": 0.4500000000000001,
+      "global_macro_f1": 0.2870066393480663,
+      "regularized_macro_f1": 0.3096727724135293,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.3255311896375412,
+        "micro_recall": 0.5030602518436763
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.3308611184037805,
+        "micro_recall": 0.5057944112777806
+      }
+    },
+    "E05": {
+      "macro_f1": 0.26881912597370383,
+      "micro_f1": 0.3552455102953209,
+      "subset_accuracy": 0.004321775856988508,
+      "mean_pred_labels": 7.7284156762597,
+      "global_threshold": 0.4250000000000001,
+      "global_macro_f1": 0.21497108358579653,
+      "regularized_macro_f1": 0.26881912597370383,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.20835995459977902,
+        "micro_recall": 0.6953293533336677
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.26761816402526595,
+        "micro_recall": 0.528194451412231
+      }
+    },
+    "E06": {
+      "macro_f1": 0.39539921543674383,
+      "micro_f1": 0.48709652653629754,
+      "subset_accuracy": 0.03801198310578529,
+      "mean_pred_labels": 5.039878204498576,
+      "global_threshold": 0.47500000000000014,
+      "global_macro_f1": 0.3757210793517674,
+      "regularized_macro_f1": 0.39539921543674383,
+      "threshold_array_exact": true,
+      "global_decision": {
+        "micro_precision": 0.4470005503577325,
+        "micro_recall": 0.5093312597200622
+      },
+      "per_statute_decision": {
+        "micro_precision": 0.43277269981095673,
+        "micro_recall": 0.5570160036121006
+      }
+    }
+  },
+  "e02_e06_identical_test_sets": 1110,
+  "e02_e06_total_test_cases": 13019,
+  "e02_dev_length_groups": [
+    {
+      "tokens": "0-510",
+      "cases": 3898,
+      "gold_cardinality": 3.857362747192383,
+      "macro_f1": 0.3266101208920854,
+      "micro_f1": 0.4313955281418658,
+      "subset_accuracy": 0.045407901487942534,
+      "mean_pred_labels": 4.461005643919959
+    },
+    {
+      "tokens": "511-1530",
+      "cases": 2650,
+      "gold_cardinality": 3.695094347000122,
+      "macro_f1": 0.39459151615839794,
+      "micro_f1": 0.49946140035906644,
+      "subset_accuracy": 0.0539622641509434,
+      "mean_pred_labels": 4.712452830188679
+    },
+    {
+      "tokens": "1531+",
+      "cases": 3633,
+      "gold_cardinality": 4.139278888702393,
+      "macro_f1": 0.37144120297014316,
+      "micro_f1": 0.563442850532161,
+      "subset_accuracy": 0.053124139829342144,
+      "mean_pred_labels": 4.783099366914396
+    }
+  ]
+}

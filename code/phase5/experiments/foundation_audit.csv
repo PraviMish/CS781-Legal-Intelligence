@@ -1,0 +1,5 @@
+model,params_M,tokens_seen_M,hidden_dim,strict_load
+decoder_only,110.62,100.0,768,True
+encoder_decoder,101.97,100.0,640,True
+prefix_lm,110.62,100.0,768,True
+efficient_gqa,112.68,700.0,768,True

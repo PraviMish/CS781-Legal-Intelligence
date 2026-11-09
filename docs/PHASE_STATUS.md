@@ -35,8 +35,8 @@
 The Drive connection rejected the larger original checkpoints above its 256 MiB transfer limit. The head and adapter checks used reconstructed backbones. The ensemble replay starts from archived predictions.
 
 ## Future phases
-Phase 5 release recovery remains open. Phase 7 is planned after its executed
-notebook, Codabench score sheets and saved artifacts have been audited.
+Phase 7 is planned after its executed notebook, Codabench score sheets
+and saved artifacts have been audited.
 
 ## Original artifacts required for replay
 
@@ -71,13 +71,17 @@ See [Phase-3 evidence audit](PHASE3_EVIDENCE_AUDIT.md) and
 
 [Phase-4 methods, records and verification](../code/phase4/README.md)
 
-## Phase 5 recovery
+## Phase 5 research release
 
-- [x] Check the GitHub branch history and recover the six-model local comparison
-- [x] Identify the executed resume notebook, Drive checkpoints and submission ZIPs
-- [ ] Recover a portable Phase 5 release and official Codabench score record
+- [x] Audit both notebooks, six run configurations and six official Codabench entries
+- [x] Port all six configurations, checkpoint restoration, calibration and submission code
+- [x] Verify all six submission ZIPs against 13,019 official test IDs and replay six development calibrations
+- [x] Record E02 as official winner at 0.3875 and test the E02-only package with synthetic weights
+- [x] Integrate the Phase 5 LaTeX chapter and six figures between Phases 4 and 6
+- [ ] Regenerate the original training split from the complete official training file
+- [ ] Strict-load original Phase 5 checkpoints, replay trained-weight predictions and repeat GPU training
 
-[Phase 5 recovery notes](PHASE5_RECOVERY.md)
+[Phase 5 evidence and verification](PHASE5_RECOVERY.md)
 
 ## Phase 6 research release
 

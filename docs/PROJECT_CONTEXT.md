@@ -53,6 +53,14 @@ checkpoint is epoch 2, with a 0.51 threshold on class-1 probability.
 Clean-development selection and official ranking differ. All ten label
 sets were replayed from archived outputs. [Phase-4 README](../code/phase4/README.md)
 
+## Phase 5 established result
+
+E02 full tuning of the 700M Efficient GQA foundation achieved **0.3875**
+official macro-F1 (1014549) with the epoch-3 classifier and per-statute
+development thresholds. E06 distilled GQA finished at **0.3842**. All six
+submitted label sets and development calibration records were validated.
+[Phase 5 methods and evidence](../code/phase5/README.md)
+
 ## Phase 6 established result
 
 V3 Efficient GQA + LoRA (E05) leads seven official submissions with BERTScore F1

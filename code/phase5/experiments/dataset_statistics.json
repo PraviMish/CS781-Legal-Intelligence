@@ -1,0 +1,181 @@
+{
+  "train_core": {
+    "tokens": {
+      "50": 637.0,
+      "75": 2064.25,
+      "90": 4171.700000000004,
+      "95": 6016.8499999999985,
+      "99": 12482.269999999997
+    },
+    "multi_window_share": 0.5672146498803454,
+    "over_1530_share": 0.3103735303298304,
+    "mean_token_coverage": 0.8463975696352661,
+    "documents": 38444
+  },
+  "val_internal": {
+    "tokens": {
+      "50": 631.5,
+      "75": 1931.75,
+      "90": 4094.5,
+      "95": 5700.25,
+      "99": 11148.699999999977
+    },
+    "multi_window_share": 0.5647933116581514,
+    "over_1530_share": 0.30051091500232235,
+    "mean_token_coverage": 0.8525354009586976,
+    "documents": 4306
+  },
+  "dev": {
+    "tokens": {
+      "50": 799.0,
+      "75": 2402.0,
+      "90": 4483.0,
+      "95": 6482.0,
+      "99": 13507.800000000116
+    },
+    "multi_window_share": 0.6171299479422454,
+    "over_1530_share": 0.3568411747372557,
+    "mean_token_coverage": 0.823455579029756,
+    "documents": 10181,
+    "unique_texts": 10118,
+    "characters": {
+      "50": 3418.0,
+      "95": 25751.0
+    },
+    "bytes": 79377066,
+    "lfs_pointer_git_blob": "e2079cae991634f34716641799e285afea5122b6",
+    "cardinality": 3.9157254695892334,
+    "density": 0.03915725275874138,
+    "labels_per_case": {
+      "1": 1544,
+      "2": 1904,
+      "3": 1818,
+      "4": 1536,
+      "5": 1147,
+      "6": 837,
+      "7": 518,
+      "8": 310,
+      "9": 227,
+      "10": 133,
+      "11": 69,
+      "12": 54,
+      "13": 20,
+      "14": 27,
+      "15": 19,
+      "16": 3,
+      "17": 5,
+      "18": 3,
+      "21": 1,
+      "22": 1,
+      "23": 4,
+      "28": 1
+    },
+    "top_cooccurrences": [
+      {
+        "labels": [
+          5,
+          34
+        ],
+        "count": 912
+      },
+      {
+        "labels": [
+          43,
+          97
+        ],
+        "count": 862
+      },
+      {
+        "labels": [
+          12,
+          13
+        ],
+        "count": 849
+      },
+      {
+        "labels": [
+          5,
+          43
+        ],
+        "count": 818
+      },
+      {
+        "labels": [
+          5,
+          39
+        ],
+        "count": 708
+      },
+      {
+        "labels": [
+          13,
+          14
+        ],
+        "count": 707
+      },
+      {
+        "labels": [
+          12,
+          14
+        ],
+        "count": 667
+      },
+      {
+        "labels": [
+          34,
+          39
+        ],
+        "count": 649
+      },
+      {
+        "labels": [
+          5,
+          97
+        ],
+        "count": 608
+      },
+      {
+        "labels": [
+          34,
+          35
+        ],
+        "count": 544
+      }
+    ]
+  },
+  "test": {
+    "tokens": {
+      "50": 787.0,
+      "75": 2246.5,
+      "90": 4265.200000000001,
+      "95": 6085.199999999997,
+      "99": 13151.619999999988
+    },
+    "multi_window_share": 0.6148705737767878,
+    "over_1530_share": 0.34495736999769566,
+    "mean_token_coverage": 0.8337286090031197,
+    "documents": 13019,
+    "unique_texts": 12940,
+    "characters": {
+      "50": 3368.0,
+      "95": 24697.09999999997
+    },
+    "bytes": 98061196,
+    "lfs_pointer_git_blob": "8ddefc0b2637cfb441e65735487c9be5ab6b4b4f"
+  },
+  "train": {
+    "documents": 42750,
+    "unique_texts": 42315,
+    "characters": {
+      "50": 2717,
+      "95": 23797
+    },
+    "cardinality": 3.704982456140351,
+    "density": 0.03704982456140351,
+    "min_label_support": 272,
+    "max_label_support": 11730,
+    "shared_exact_texts_with_dev": 81,
+    "shared_exact_texts_with_test": 108,
+    "source": "Executed resume notebook corpus audit and archived label frequencies"
+  }
+}

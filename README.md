@@ -16,7 +16,7 @@ A reproducible, official-data-only research implementation of a compact legal-la
 | 6 | Abstractive legal summarization | BERTScore F1 |
 | 7 | Prior-case retrieval, seven ranked case IDs per query | micro-F1@7 |
 
-The research release covers Phases 1–4 and 6. Phase 5 has a partial evidence recovery.
+The research release covers Phases 1–6.
 
 ## Phase-1 finding
 
@@ -46,9 +46,9 @@ binary court judgment prediction, ahead of the distilled-student blend
 (0.7369) and Prefix-LM blend (0.7353). E09 led on clean development.
 [Phase-4 experiments and reproduction](code/phase4/README.md)
 
-## Phase 5 recovery
+## Phase 5 | Legal statute identification
 
-[Recovered local results and release status](docs/PHASE5_RECOVERY.md)
+Efficient GQA full fine-tuning (E02) scored **0.3875** official macro-F1 (submission **1014549**), ahead of the six-layer distilled GQA (E06, **0.3842**). The study compares six configurations and replays their saved development calibration. [Phase 5 experiments and reproduction](code/phase5/README.md)
 
 ## Phase 6 | Legal summarization
 
@@ -60,6 +60,7 @@ V3 Efficient GQA + LoRA (E05) achieved the best recorded official BERTScore F1, 
 - `code/phase2/`: exact-span legal NER, frozen and fully tuned models, LoRA and LoRMA+ adapters, knowledge distillation, voting, and official submission packaging
 - `code/phase3/`: rhetorical roles, context packing, adaptation, distillation, and structured decoding
 - `code/phase4/`: court judgment prediction, eight trained runs, two blends, and saved-output replay
+- `code/phase5/`: six legal statute classifiers, grouped split, per-statute thresholds, and submission validation
 - `code/phase6/`: legal summarization across three revisions, seven official submissions, passage alignment, and two distillation objectives
 - `code/common/`: shared atomic checkpointing, artifact and RNG helpers
 - `code/tests/`: software smoke tests

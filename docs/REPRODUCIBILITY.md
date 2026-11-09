@@ -50,6 +50,15 @@ The separate source-only E01 inference package requires the original Phase 4
 classifier and uses its fixed 0.51 threshold. See the phase README for commands
 and the original-weight verification limits.
 
+## Phase 5 legal statute identification
+
+Use the pinned official Phase_5_LSI files, archived Phase 1 tokenizer and
+matching Phase 1 foundation. The six-run CLI covers grouped preparation,
+training and restoration, distillation, development calibration, inference
+and ZIP validation. The standalone E02 archive requires the original Phase 5
+epoch-3 classifier and its matching thresholds. See the [Phase 5 README](../code/phase5/README.md)
+and [evidence and replay limits](PHASE5_RECOVERY.md).
+
 ## Phase 6 legal abstractive summarization
 
 Use the pinned official Phase_6_Summ dataset, original Phase 1 tokenizer and

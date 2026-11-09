@@ -1,0 +1,7 @@
+run,submission_file,submission_id,status,official_macro_f1,source
+E01,E01_GQA_LoRMA.zip,1014548,Finished,0.3532,Codabench submission screenshot 2026-10-28
+E02,E02_GQA_FullFT.zip,1014549,Finished,0.3875,Codabench submission screenshot 2026-10-28
+E03,E03_Decoder_Partial.zip,1014550,Finished,0.3565,Codabench submission screenshot 2026-10-28
+E04,E04_Prefix_Adapters.zip,1014552,Finished,0.2967,Codabench submission screenshot 2026-10-28
+E05,E05_EncDec_LoRA.zip,1014553,Finished,0.2619,Codabench submission screenshot 2026-10-28
+E06,E06_GQA_Distilled.zip,1014554,Finished,0.3842,Codabench submission screenshot 2026-10-28
