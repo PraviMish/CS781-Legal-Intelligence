@@ -1,0 +1,5 @@
+source,training_tokens_billions_rounded,sampling_probability_rounded,training_documents,validation_documents_skipped
+Acts,0.1535,0.0684,18624,202
+High Courts,2.4007,0.4688,2511473,25265
+Supreme Court,0.2579,0.0983,55017,532
+Tribunals,1.676,0.3645,860490,8642

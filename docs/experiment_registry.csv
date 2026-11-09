@@ -1,0 +1,8 @@
+phase,variant,tokens_millions,decoder,official_primary_bertscore_f1,official_rouge_l_f1,official_bleu4,notes
+1,decoder_only,100,legacy_word_guard_v1,0.8346557,0.19630469,0.05258763,
+1,efficient_gqa,100,legacy_word_guard_v1,0.83479506,0.19745313,0.0538535,best official score
+1,efficient_gqa_300M,300,legacy_word_guard_v1,0.83080482,0.1718125,0.0325767,
+1,efficient_gqa_500M_tuned,500,greedy_full_prompt,0.78932995,0.14202344,0.00777384,
+1,efficient_gqa_700M_tuned,700,greedy_full_prompt,0.8099227,0.14757031,0.01275489,
+1,encoder_decoder,100,legacy_word_guard_v1,0.8256914,0.16444531,0.02212777,
+1,prefix_lm,100,legacy_word_guard_v1,0.82551551,0.16594531,0.0261829,

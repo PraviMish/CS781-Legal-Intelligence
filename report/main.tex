@@ -1,0 +1,247 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,booktabs,graphicx,tabularx,longtable,array}
+\usepackage{caption,subcaption,float,enumitem,xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{siunitx}
+\sisetup{detect-all}
+\newcommand{\method}[1]{\texttt{#1}}
+\newcommand{\BERT}{\ensuremath{\mathrm{BERTScore}_{F_1}}}
+\newcommand{\ROUGE}{\ensuremath{\mathrm{ROUGE\mbox{-}L}_{F_1}}}
+\newcommand{\ppl}{\ensuremath{\mathrm{PPL}}}
+\title{Developing a Compact, Self-Hosted Legal Language Foundation:\\
+A Reproducible Study of Architecture, Data Mixing, Continued Pretraining, and Decoding}
+\author{CS781 Legal Intelligence Capstone\\\small Master Research Report --- Phase 1}
+\date{9 November 2026 --- working research edition}
+\begin{document}
+\maketitle
+\begin{abstract}
+This report documents the first phase of a sequential, self-hosted legal natural-language-processing capstone: the construction of a compact, from-scratch legal language model under an official-data-only constraint. We implemented and trained four architecturally different Transformer variants: a conventional causal decoder, an encoder--decoder, a prefix-language-model hybrid, and an efficient causal Transformer using grouped-query attention, rotary position embeddings, RMS normalization, and SwiGLU feed-forward layers. A custom 32,000-token byte-level BPE tokenizer was trained exclusively on the supplied corpus. At approximately 100 million pretraining tokens, the 112.679-million-parameter efficient grouped-query model attained the best official BERTScore F1 of \textbf{0.83479506} on 1,000 hidden-reference continuations. We then tokenized all four available legal sources (approximately 4.488 billion usable BPE tokens) and continued this model to 300, 500, and 700 million consumed tokens. Despite declining validation cross-entropy through 700 million tokens, all three continuation submissions scored below the original winner on the hidden test. A locally successful decoder selection at 500 million tokens likewise failed to improve official BERTScore. We present the corpus construction, architecture definitions, training and resume protocol, seven official submissions, quantitative local and private results, and the resulting lessons about validation objectives, decoding, model selection, and reproducible legal language generation. Later capstone phases will be incorporated into this same master report as independently documented investigations.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Project Motivation and Scope}
+Legal practice involves large amounts of sensitive natural-language material: judgments, statutes, party submissions, and potentially privileged client records. Sending confidential documents to a remote model endpoint is incompatible with the motivating deployment scenario. The capstone therefore investigates whether an entirely self-hosted language foundation can be trained and adapted within limited compute and model-size constraints. Phase 1 establishes that foundation. Subsequent phases address entity extraction, rhetorical structure, judgment outcomes, statutory references, summarization, and prior-case retrieval; those task-specific chapters will be added when their evidence is finalized.
+
+The scientific question in Phase 1 is not simply whether a language model can imitate legal prose. It is which compact architecture and training/decoding decisions best support the exact continuation task, and whether improvements in next-token language-model fit also improve the hidden-reference continuation metric. The official evaluation takes a \emph{512-word legal prompt} and requires a \emph{128-word continuation} in a JSON field without repeating the prompt. Official Phase-1 ranking uses BERTScore F1, with ROUGE-L F1 and BLEU-4 as secondary metrics. The dataset provides no public test continuations; local evaluation instead uses held-out documents and internally constructed prompt--continuation examples.
+
+\paragraph{Competition constraints.} The models must be trained from scratch using official data only; pretrained LMs, externally scraped legal corpora, commercial inference/training APIs, and models exceeding 300 million parameters are prohibited. The prescribed foundation size is 50--300 million parameters, and four \emph{substantially different} architectures must be investigated. The submission format is a ZIP containing \method{prediction.json} directly at the archive root. Each output has exactly the official example IDs and 128 words per continuation. This study focuses on the reproducible implementation and analysis of these obligations; it makes no claim of having performed a separate human legal-validity assessment.
+
+\section{Phase 1: Data and Problem Formulation}
+\subsection{Official dataset organization}
+The course dataset \path{Exploration-Lab/CS-781-Capstone} provided all training data. We used its \path{Phase_1_Pretraining} configuration. Statutory acts and High Court judgments come from \path{train_acts.json} and \path{train_high_courts.json}. Supreme Court judgments and tribunal decisions come from \path{train_supreme_court.json} and \path{train_tribunals.json}. These sources differ in document structure, stylistic density, and abundance. The official \path{Test/test.json} contains 1,000 prompts with hidden continuation references.
+
+\begin{table}[htbp]\centering\small
+\caption{Full-corpus preprocessing results taken from the final executed notebook. Token quantities and weights shown here are rounded; counts are specific to the custom BPE tokenizer.}
+\label{tab:corpus}
+\begin{tabular}{lrrrr}
+\toprule
+Source & Train documents & Held-out documents & Train BPE tokens (B) & Mix probability \\
+\midrule
+Acts & 18,624 & 202 & 0.1535 & 0.0684 \\
+High Courts & 2,511,473 & 25,265 & 2.4007 & 0.4688 \\
+Supreme Court & 55,017 & 532 & 0.2579 & 0.0983 \\
+Tribunals & 860,490 & 8,642 & 1.6760 & 0.3645 \\
+\midrule
+Total & 3,445,604 & 34,641 & \textbf{4.4881} & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=.82\linewidth]{figures/phase1/p1_corpus_mixing.pdf}
+\caption{Source abundance and subsequent temperature-balanced sampling probability. Sampling raises the relative contribution of smaller legal sources without discarding large sources.}
+\label{fig:mix}
+\end{figure}
+
+The initial architecture comparison used an approximately 500-million-token binary cache drawn from the four sources. Per-source cached training token counts (millions) were 36.561 (Acts), 239.220 (High Courts), 55.466 (Supreme Court), and 168.784 (Tribunals). Validation stores were approximately 1.395, 2.000, 2.002, and 2.101 million tokens respectively; a balanced pseudo-development collection contained 40 examples per source (160 in total). For full-corpus continuation, preprocessing expanded the accessible training stream to approximately 4.488 billion tokens, but the model \emph{consumed} at most 700 million training tokens. This distinction between corpus availability and optimizer budget is essential.
+
+\subsection{Text extraction, validation splitting and leakage control}
+Raw JSON files were inspected and streamed rather than fully loaded into memory. A record's legal text was selected from recognized fields (such as \method{text}, \method{document}, \method{content}, and \method{judgment}), followed by a conservative fallback to substantial string content when needed. The original preprocessor derived a deterministic source-qualified document key and used a stable SHA-1-based hash to assign roughly one percent of documents to validation. This was a document-level split, not a random token split, reducing direct overlap between train and validation excerpts. Resumable tokenization wrote 16-bit BPE IDs to source-specific binary arrays with independent state JSON files. The original notebook also used a more-precise SHA-1 prefix in a CPU-restoration helper for the later corpus pass; both procedures derive thresholds from the same leading digest bits, but a future strict re-audit should compare document assignments before asserting perfect identity of the two materializations.
+
+The 160 pseudo-development examples were formed from sufficiently long validation documents, using a deterministically chosen span of 512 whitespace words as context followed by the next 128 whitespace words as reference. This is an imperfect proxy for the private test distribution: the constructed prompts can differ in source coverage, continuation boundaries, drafting style and hidden-reference conventions. The project therefore distinguishes local loss, pseudo-development lexical metrics, and the official held-out BERTScore, rather than treating them as interchangeable.
+
+\subsection{Tokenizer construction and source-domain diagnostics}
+A fresh 32,000-token byte-level BPE tokenizer was trained on a balanced character budget of 100 million characters, approximately 25 million from each source. The trainer used a minimum merge frequency of two and the special tokens \method{<pad>}, \method{<bos>}, \method{<eos>}, and \method{<unk>} with IDs 0--3. Byte-level encoding avoids an out-of-vocabulary failure for unusual section markers, proper names, numerals and punctuation. Legal typography and Unicode were not aggressively lowercased or normalized before modeling; maintaining surface information is important for statute references and legal entities. At the time of this experiment, the notebook's 100-document-per-source diagnostic reported the following token-to-word ratios.
+
+\begin{table}[htbp]\centering\small
+\caption{Tokenizer efficiency measured on an inspected sample of 100 documents from each source, not on the entire corpus.}
+\label{tab:tok}
+\begin{tabular}{lrr}
+\toprule Source & BPE tokens / word & Characters / BPE token \\
+\midrule Acts & 1.213 & 4.859 \\
+High Courts & 1.553 & 4.146 \\
+Supreme Court & 1.197 & 4.820 \\
+Tribunals & 1.186 & 5.086 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The comparatively fragmented High Court sample underscores the value of evaluating a legal tokenizer by source instead of relying on one aggregate efficiency number. These numbers describe the sampled records and should not be interpreted as population-wide estimates.
+
+\subsection{Source mixing}
+The dataset's raw source distribution was highly imbalanced. To lessen the tendency of a single high-volume source to dominate random training batches, the initial corpus allocation weighted source \(i\) in proportion to raw file size \(n_i^{\alpha}\), with \(\alpha=0.7\):
+\begin{equation}
+ p_i = \frac{n_i^{\alpha}}{\sum_j n_j^{\alpha}},\qquad \alpha=0.7.
+\end{equation}
+The full-corpus continuation recalculated source weights from actual BPE training token counts rather than from JSON file sizes, yielding the approximate probabilities in Table~\ref{tab:corpus}. The resulting stream was sampled as random contiguous blocks from memory-mapped \method{uint16} arrays. This is a temperature-balanced source mixture, not a deduplicated or document-balanced iterable; random blocks can cross document separators and may revisit material across optimization steps.
+
+\section{Model Architectures}
+\subsection{Four substantively different candidates}
+All models were implemented as PyTorch modules with random initial weights and a shared 32k tokenizer. Architecture comparisons were performed at approximately 100 million consumed training tokens. The design dimensions were held fixed within each architecture rather than retuned per downstream model in this initial sweep.
+
+\begin{table}[htbp]\centering\small
+\caption{Original Phase-1 models. Parameter counts are based on the exact model implementations with tied token embedding/output projection weights.}
+\label{tab:models}
+\begin{tabular}{p{.27\linewidth}rrrr>{\raggedright\arraybackslash}p{.20\linewidth}}
+\toprule
+Architecture & Params (M) & Layers & Hidden & Heads & Distinguishing mechanism \\
+\midrule
+Decoder-only & 110.615 & 12 & 768 & 12 & Causal self-attention \\
+Encoder--decoder & 101.972 & 7+7 & 640 & 10 & Bidirectional encoding + cross-attention \\
+Prefix-LM & 110.615 & 12 & 768 & 12 & Bidirectional prefix, causal continuation \\
+Efficient GQA & 112.679 & 14 & 768 & 12/4 & Grouped-query attention, RoPE, RMSNorm, SwiGLU \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Standard decoder-only Transformer.} A stack of 12 blocks with learned positional embeddings and multi-head masked self-attention predicts the next token in each training block. In the standard causal objective, token position \(t\) can attend only to positions at or before \(t\), and the training loss is the mean token-level cross entropy over all predicted positions.
+
+\paragraph{Encoder--decoder Transformer.} The 7-layer encoder contextualizes the source side bidirectionally; the 7-layer decoder attends causally to target-side tokens and cross-attends to encoder states. The original training block is partitioned approximately 75/25 between source and target. The decoder is teacher-forced starting from the BPE begin-of-sequence token and must predict the target span. This objective resembles the actual task of continuing a longer input, but uses more complex conditioning and a smaller decoder capacity under the parameter constraint.
+
+\paragraph{Prefix-language model.} The prefix-LM hybrid modifies the attention visibility rather than merely changing hidden dimensions. Prefix tokens may see the entire prefix; continuation tokens may see every prefix token and earlier continuation tokens. Its training objective is continuation-specific, but the prefix mask and generation cache semantics differ from those of a strictly causal decoder.
+
+\paragraph{Efficient grouped-query causal Transformer.} The 14-block winning architecture has \(d=768\), 12 query heads and four key/value heads; query heads are grouped so several query heads share one key/value representation. With head width 64 and query-to-KV ratio three, this reduces K/V projection and autoregressive KV-cache costs relative to standard 12-head multi-head attention. Each block uses pre-normalization with RMSNorm, RoPE for position-dependent Q/K rotations, a residual attention update, then a SwiGLU gated feed-forward layer with intermediate dimension 2048. The token embedding is tied to the final language-model projection.
+
+\subsection{Attention and optimization objective}
+For a causal model with token sequence \(x_1,\ldots,x_T\), the model minimizes
+\begin{equation}
+ \mathcal{L}_{\mathrm{LM}}(\theta)=-\frac{1}{T-1}\sum_{t=1}^{T-1}\log p_\theta(x_{t+1}\mid x_1,\ldots,x_t).
+\end{equation}
+Scaled dot-product attention uses \(\mathrm{softmax}(QK^\top/\sqrt{d_h}+M)V\), where \(M\) is a causal or prefix-specific visibility mask. GQA separates the query head count \(H_q\) from the shared key/value head count \(H_{kv}\); here \(H_q=12\) and \(H_{kv}=4\). The architecture selection therefore tests attention organization, normalization/position mechanisms, and conditional modeling structure, not just parameter count.
+
+\section{Training and Experimental Protocol}
+\subsection{Initial 100M-token architecture comparison}
+The context length was 1,280 BPE tokens. An approximately 65,536-token effective-batch target produced 61,440 tokens per optimizer step for an eight-example microbatch (six accumulation steps) and the same total for the encoder--decoder architecture using a four-example microbatch (12 accumulation steps). The four architectures used AdamW with peak learning rate \(3\times10^{-4}\), \(\beta_1=0.9\), \(\beta_2=0.95\), \(\epsilon=10^{-8}\), weight decay 0.1 on matrix weights but not biases/norm scales, gradient norm clipping to 1.0, and a five-million-token warmup followed by a cosine schedule whose initial horizon was 500 million tokens. Automatic mixed precision was used when supported; training can be resumed from model, optimizer, RNG, and sampler states.
+
+We tracked training cross entropy and fixed-validation cross entropy/perplexity separately. The validation sampling stream was reseeded for comparable checkpoints. A checkpoint of the best validation model and a separate latest resumable state were both retained. The architecture comparison was not a one-to-one identical compute-cost comparison: encoder--decoder computation includes cross-attention and processing a separate source/target structure; resource use was recorded as a complementary consideration rather than conflated with score.
+
+\subsection{Continued pretraining on the full corpus}
+After Efficient GQA led the initial official submissions, the original approximately 100M-token checkpoint was preserved. Tokenization of the complete corpus enabled a new temperature-balanced training sampler across approximately 4.488B available BPE tokens. The saved model and AdamW state were reused to train toward 300M, 500M and ultimately 700M \emph{total} consumed tokens. The continuation was not a fresh model or a new architecture: it adjusted the learning-rate schedule to decay from the saved checkpoint learning rate toward \(3\times10^{-5}\) at 700M. Resumable states were written periodically (approximately every 20M tokens), with validation approximately every 25M tokens and milestone snapshots preserved separately. Progress was resilient to runtime interruption, and saved prediction partials similarly allowed generation to resume without recomputing completed examples.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=.83\linewidth]{figures/phase1/p1_validation_curve.pdf}
+\caption{Validation cross-entropy during continued Efficient-GQA pretraining, reconstructed from the actual notebook's displayed validation events. The initial 100M reference comes from the original architecture comparison and was measured in a different evaluation run; continuation observations follow the 25-batch schedule.}
+\label{fig:valcurve}
+\end{figure}
+
+The trajectory in Figure~\ref{fig:valcurve} shows a generally monotonic decrease in held-out next-token loss, reaching approximately 1.9288 at 700M. This supports the narrow claim that the model became a better fit to its validation token distribution under the chosen cross-entropy objective. It does not establish a corresponding improvement in hidden-reference continuation overlap or legal factual correctness.
+
+\subsection{Generation and decoding hypotheses}
+For all official submissions the generated \method{text} field had to contain exactly 128 whitespace-separated words, excluding the original prompt. The initial submissions used temperature 0.8, top-\(k=50\), top-\(p=0.95\), repetition penalty 1.15, and a no-repeat four-token-gram guard. To avoid pathological outputs dominated by legal section numbers, dates or token sequences that rarely formed new words, the decoder reserved substantial context for generation and forced an alphabetic BPE token with leading whitespace after repeated non-word-start tokens. It seeded sampling deterministically from each prompt's SHA-1 digest, supported an emergency stronger guard for difficult cases, and truncated generated text only after reaching 128 words.
+
+After reaching 500M, the experiment held model weights fixed and compared alternative decoding schedules on the pseudo-development set: conservative sampling, balanced sampling, low-temperature sampling, full-prompt greedy decoding, and the legacy guarded strategy. The decoder with the highest local ROUGE-L was selected for tuned submissions at 500M and 700M. Because this was a decoder-selection experiment and not an architecture experiment, the comparison is valid only for the local held-out continuation proxy; the private test result provides an additional generalization check.
+
+\section{Results}
+\subsection{Original architecture comparison}
+The four independent submissions and the three continuation submissions were validly evaluated on the 1,000-example hidden-reference set. Table~\ref{tab:official} is the authoritative source of \emph{official} results for Phase 1. Values should not be mixed with local pseudo-development BLEU, which the notebook reports on a 0--100 scale.
+
+\begin{table}[htbp]\centering\small
+\caption{Official Codabench Phase-1 results, as transcribed from the seven user-provided score reports. The bold row is the winner according to the designated primary metric.}
+\label{tab:official}
+\begin{tabular}{lrrr}
+\toprule Submission & BERTScore F1 & ROUGE-L F1 & BLEU-4 \\
+\midrule
+Decoder only, 100M & 0.83465570 & 0.19630469 & 0.05258763 \\
+\textbf{Efficient GQA, 100M} & \textbf{0.83479506} & \textbf{0.19745313} & \textbf{0.05385350} \\
+Efficient GQA, 300M & 0.83080482 & 0.17181250 & 0.03257670 \\
+Efficient GQA, 500M tuned & 0.78932995 & 0.14202344 & 0.00777384 \\
+Efficient GQA, 700M tuned & 0.80992270 & 0.14757031 & 0.01275489 \\
+Encoder--decoder, 100M & 0.82569140 & 0.16444531 & 0.02212777 \\
+Prefix-LM, 100M & 0.82551551 & 0.16594531 & 0.02618290 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=.8\linewidth]{figures/phase1/p1_architecture_codabench.pdf}
+\caption{Official primary scores of the original four 100M-token architectures. Efficient GQA wins narrowly over the standard decoder, while both beat encoder--decoder and prefix-LM.}
+\label{fig:arch}
+\end{figure}
+
+The GQA model led the decoder-only model by approximately 0.00014 BERTScore F1. The architectures differ in several respects, and each score comes from one submission. The comparison therefore measures performance of the submitted systems without isolating the effect of grouped-query attention.
+
+\subsection{Training-scale and private-test generalization gap}
+\begin{figure}[htbp]\centering
+\includegraphics[width=.79\linewidth]{figures/phase1/p1_gqa_token_scaling.pdf}
+\caption{Primary-score trajectory across the four Efficient-GQA submissions. Later checkpoints used an expanded training corpus; the 500M/700M submissions also used a different, locally tuned decoding configuration. This is not a controlled one-variable pretraining ablation across all points.}
+\label{fig:scaling}
+\end{figure}
+
+The 700M validation loss fell to approximately 1.9288 (perplexity \(\approx6.88\)), whereas the original ~100M architecture-comparison perplexity was 11.039. Yet private BERTScore declined from 0.83479506 at 100M to 0.83080482 at 300M, 0.78932995 at 500M tuned, and 0.80992270 at 700M tuned. The largest official drop coincides with both continued training and an altered decoder; therefore this experiment cannot causally attribute the entire decline to more training tokens. It does, however, unequivocally reject the simple selection rule ``lower validation perplexity implies higher private-test BERTScore.''
+
+\subsection{Decoding ablation and local-test discrepancy}
+\begin{table}[htbp]\centering\small
+\caption{500M checkpoint decoder screening on 40 balanced pseudo-development examples. Local BLEU-4 is reported in sacrebleu's 0--100 scale.}
+\label{tab:decoding}
+\begin{tabular}{lrr}
+\toprule Decoder & Mean ROUGE-L F1 & BLEU-4 (0--100) \\
+\midrule
+Greedy full-prompt & \textbf{0.2837} & \textbf{15.7469} \\
+Low-temperature sampling & 0.2737 & 15.0160 \\
+Conservative sampling & 0.2634 & 14.3891 \\
+Balanced sampling & 0.2546 & 13.2641 \\
+Legacy word guard & 0.2313 & 10.7376 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=.87\linewidth]{figures/phase1/p1_decoding_sweep.pdf}
+\caption{The quick decoder ablation selected full-prompt greedy decoding on local overlap, but the official private-test metric favored the earlier 100M submission.}
+\label{fig:decoding}
+\end{figure}
+
+The two best configurations were then reevaluated on all 160 pseudo-development examples. Greedy full-prompt obtained ROUGE-L F1 0.2933 and BLEU-4 18.8591, compared with 0.2761 and 16.5282 for low-temperature sampling. A separate 160-example evaluation of the 500M checkpoint with the original guarded decoder recorded 0.221375 and 10.102891. The 700M model using the selected greedy decoder achieved local ROUGE-L F1 0.2923 and BLEU-4 18.7765. The corresponding 500M and 700M official BERTScores were 0.78932995 and 0.80992270, both below the 100M winner. The local proxy and official metric have different targets. Comparing all checkpoints with the original decoder on the same official distribution would isolate the effect of the decoding change from other differences between submissions.
+
+\subsection{Best official Phase-1 system}
+The selected Phase-1 foundation for course submission is the \textbf{original approximately 100M-token Efficient-GQA best-validation checkpoint}, preserved as \method{milestones/best\_100M.pt} before subsequent training and used with the original \method{legacy\_word\_guard\_v1} generation code. The 300M, 500M, and 700M checkpoints are retained as completed experiments, not substituted for the winner. Only its winning inference path belongs in the final best-model-only code archive; all architecture and decoding experiments belong in the comprehensive GitHub research repository. The official competition rank was not present in the supplied score screenshots, so no numeric rank is asserted in this research edition.
+
+\section{Error Analysis and Discussion}
+\subsection{Observed failure modes during development}
+The notebook's development logs document two concrete engineering problems. First, a rotary-embedding helper named \method{apply} conflicted with PyTorch's \method{nn.Module.apply}, causing model construction to fail when a recursive weight-initialization routine invoked it without the expected key/value arguments. Renaming the RoPE operation resolved the namespace collision. Second, early decoding generated many BPE tokens without enough whitespace-delimited words, especially numeral-heavy legal citation sequences. The initial rigid 128-word requirement then caused failed predictions despite exhausting the generation budget. This motivated the word-progress guard and conditional emergency retry used in valid submissions.
+
+\subsection{Interpretation of the continuation results}
+The full-corpus model improved at language modeling but not at the hidden continuation task. There are several plausible explanations, none established independently here: (i) the training data mixture shifted between the original cache and complete corpus; (ii) greedy decoding overoptimized the local proxy and reduced diversity or distributional overlap on official prompts; (iii) local pseudo-development continuations differ from the official hidden references; and (iv) a fixed 128-word target creates a length-control constraint not directly optimized by next-token cross entropy. Because multiple factors changed, a causal decomposition requires further controlled experiments. This is an important limitation of the experimental evidence, not a reason to discard negative results.
+
+\paragraph{Evaluation limitations.} BERTScore rewards contextual semantic similarity to hidden reference continuations, ROUGE-L measures longest-common-subsequence overlap, and BLEU measures weighted clipped n-gram precision. None by itself establishes whether a generated judgment is factually accurate, cites a real statute, avoids fabricated case law, preserves privilege, or is suitable for legal decision-making. There was no reported expert legal assessment, no calibrated uncertainty for legal facts, and no verification against an external authority (the latter was disallowed by the official training-data restrictions).
+
+\paragraph{Reproducibility.} The training notebook contains cells that restore runtime state after disconnections. The repository uses explicit configuration and automatic checkpoint loading. Exact replay still requires strict loading of the original weights and comparison of fixed-prompt logits and predictions with the archived run. The official Codabench scores come from the recorded submissions. Local evaluation uses the pseudo-development references.
+
+\section{Conclusion and Next Steps}
+Phase 1 delivered a from-scratch, legal-domain, self-hostable language foundation within the competition's parameter limit. Four different Transformer architectures were implemented and submitted, and the original 112.679M-parameter GQA model obtained the strongest private BERTScore (0.83479506). The experiments subsequently expanded the available training corpus to 4.488B BPE tokens and continued the same model to 700M consumed tokens. A declining next-token validation loss was not a reliable proxy for the private continuation metric, and a decoding rule that improved local ROUGE substantially did not transfer to official evaluation. The outcome supports a conservative model-selection procedure that prioritizes held-out task performance over optimization-loss improvements and documents configuration changes precisely.
+
+The next research steps are to (a) compare checkpoints under an unchanged decoder and matched local evaluation set, (b) quantify source-dependent error rates using a fixed analysis subset, (c) inspect citation hallucination and repetition with a human-readable audit, and (d) transfer the chosen 100M foundation to later legal NLP tasks with explicit ablations of frozen, partial, adapter-based, and full fine-tuning. No privileged client data were used in this study; deployment suitability still requires security validation and human legal review.
+
+\appendix
+\section{Supplementary Reproduction Notes}
+\subsection{Experiment ledger and provenance}
+The repository's \method{code/phase1/experiments/official\_and\_local\_results.csv} records all seven submitted variants, their official primary and secondary metrics, training budget, decoding configuration, model size and locally available metrics. The \method{validation\_curve.csv}, \method{decoding\_sweep.csv}, and \method{full\_corpus\_summary.csv} files are machine-readable sources for figures in this report. The original executed notebook is the archival record and is intentionally not copied verbatim into the public repository because it includes redundant restore cells and environment-specific paths. All repo visualizations are generated by \method{code/phase1/analysis/figures.py}, so there is no dependency on screenshot images.
+
+\subsection{Suggested verification before final freezing}
+A reproducibility check should instantiate each of the four model classes and confirm its original parameter count, load the corresponding trusted \method{best.pt} file with strict state-dictionary checking, compare fixed-prompt logits between the original executed notebook and the refactored module, and regenerate a small deterministic set of predictions with matching legacy decoder settings. Next verify official ID equality and exactly 128 words per prediction, then ZIP \method{prediction.json} at the archive root. Because the original weights were not included with this working report's source archive, full checkpoint compatibility is a pending integration test, not a completed fact.
+
+% --- Future phases are added here as coherent scientific sections. ---
+% Phase 2: Legal Named Entity Recognition
+% Phase 3: Rhetorical Role Prediction
+% Phase 4: Court Judgment Prediction
+% Phase 5: Legal Statute Identification
+% Phase 6: Abstractive Summarization
+% Phase 7: Prior Case Retrieval
+
+\end{document}

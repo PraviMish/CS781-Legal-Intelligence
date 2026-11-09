@@ -1,0 +1,8 @@
+configuration,examples,rouge_l_f1,bleu4_sacrebleu_0_100
+greedy_full_prompt,40,0.2837,15.7469
+full_prompt_low_temperature,40,0.2737,15.016
+full_prompt_conservative,40,0.2634,14.3891
+full_prompt_balanced,40,0.2546,13.2641
+legacy_guarded,40,0.2313,10.7376
+greedy_full_prompt,160,0.2933,18.8591
+full_prompt_low_temperature,160,0.2761,16.5282
