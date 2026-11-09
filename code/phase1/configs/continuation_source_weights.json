@@ -1,0 +1,10 @@
+{
+  "source_weights": {
+    "acts": 0.06838981276185795,
+    "high_courts": 0.468761649255344,
+    "supreme_court": 0.098340290833555,
+    "tribunals": 0.364508247149243
+  },
+  "policy": "rounded full-corpus BPE counts^0.7",
+  "note": "For exact reproduction replace with full_corpus_metadata.json persisted by original run."
+}

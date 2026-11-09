@@ -1,0 +1,11 @@
+# Versions verified against user notebook environment where available.
+# Install a PyTorch build appropriate for your accelerator separately if needed.
+torch>=2.4,<3.0
+numpy>=1.26,<3.0
+pandas>=2.0,<3.0
+matplotlib>=3.8,<4.0
+tokenizers>=0.19,<1.0
+ijson>=3.2,<5.0
+rouge-score>=0.1.2,<1.0
+sacrebleu>=2.3,<3.0
+pytest>=8.0,<10.0

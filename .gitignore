@@ -1,0 +1,63 @@
+# Python cache, editor artifacts, virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+
+# Sensitive tokens and private keys
+*credentials*
+*secret*
+*.pem
+*.key
+
+# Model weights and runtime states
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.npy
+*.npz
+*.mmap
+*.tmp
+*.log
+*.jsonl
+
+# Very large archives and predictions
+*.zip
+**/raw_cache/
+**/pseudo_dev*.json
+**/legal_bpe_32k.json
+**/full_tokenized_data/
+**/tokenized_data/
+**/runtime/
+**/checkpoints/
+**/submission.zip
+**/prediction.json
+**/partial_*.json
+
+# LaTeX build outputs (retain the report's figure assets)
+/report/main.pdf
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.synctex.gz
+*.toc
+*.xdv
+
+# OS
+.DS_Store
+Thumbs.db

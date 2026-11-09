@@ -1,0 +1,9 @@
+{
+  "source_weights": {
+    "acts": 0.07309161190565235,
+    "high_courts": 0.4784394568235679,
+    "supreme_court": 0.11092597147601485,
+    "tribunals": 0.33754295979476495
+  },
+  "policy": "raw_json_gibibytes^0.7"
+}
