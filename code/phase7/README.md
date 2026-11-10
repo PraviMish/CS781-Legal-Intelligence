@@ -120,4 +120,4 @@ No raw legal judgments, private leaderboard labels, user authentication secrets,
 
 `python scripts/package_phase7_winner.py --output phase7_winner_source.zip` packages only E10 source and instructions. It **does not** include private predictions, model weights, or unrelated experiments. The public research repository retains all E00–E10 methods.
 
-The unrestricted scientific report is `report/phase7.tex`, included after Phase 6 in the existing master report by the integration script. The separate official ten-page course report is **not** created or substituted here.
+The full Phase-7 research chapter is `report/phase7.tex`, included by `report/main.tex`. The official course submission is packaged separately.
