@@ -22,7 +22,7 @@ held-out judgments for original, V2 and V3 respectively. Different samples
 and supervision budgets limit cross-version comparisons. Course rules name
 ROUGE-1 and ROUGE-L as secondary official metrics. The supplied official
 screenshot shows BERTScore F1 and submission IDs. See the
-[aggregate results](experiments/results.csv) and [evidence audit](../../docs/PHASE6_EVIDENCE.md).
+[aggregate results](experiments/results.csv) and [archive verification](experiments/archive_verification.json).
 
 ## Data and model
 
